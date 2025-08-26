@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RideFusion - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Cinzel', serif;
+    }
+    .great-vibes {
+      font-family: 'Great Vibes', cursive;
+    }
+  </style>
+</head>
+
+<body class="bg-black min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md p-8 rounded-3xl shadow-xl bg-gradient-to-br from-black via-zinc-900 to-gray-800 border border-yellow-500">
+    <h2 class="text-4xl font-bold text-center text-yellow-400 mb-8 great-vibes">Welcome to RideFusion</h2>
+
+    <form class="space-y-6">
+      <div>
+        ign<label for="email" class="block text-sm font-medium text-yellow-300">Email address</label>
+        <input id="email" name="email" type="email" required class="mt-1 block w-full px-4 py-3 bg-black border border-yellow-400 text-yellow-100 placeholder-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-yellow-300">Password</label>
+        <input id="password" name="password" type="password" required class="mt-1 block w-full px-4 py-3 bg-black border border-yellow-400 text-yellow-100 placeholder-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="text-sm">
+          <a href="#" class="font-medium text-yellow-400 hover:text-yellow-300">Forgot your password?</a>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="w-full py-3 px-6 bg-yellow-500 text-black text-lg font-semibold rounded-lg hover:bg-yellow-400 transition duration-300 shadow-md">Login</button>
+      </div>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-yellow-200">
+      Don't have an account?
+      <a href="#" class="font-semibold text-yellow-400 hover:text-yellow-300">Sign up</a>
+    </p>
+  </div>
+</body>
+
+</html>
