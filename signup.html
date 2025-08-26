@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RideFusion • Sign Up</title>
+  <meta name="description" content="Sign up for RideFusion pooling service supporting car, bike, and auto rides."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            royal: {
+              black: '#0a0a0a',
+              gold: '#d4af37',
+              goldDark: '#b8860b'
+            }
+          },
+          boxShadow: {
+            royal: '0 10px 30px rgba(212,175,55,0.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    html { font-family: Cinzel, serif; }
+  </style>
+</head>
+<body class="bg-royal-black text-royal-gold min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-md bg-royal-black border border-royal-gold rounded-2xl shadow-royal p-8">
+    <div class="mb-6 text-center">
+      <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-royal-gold text-royal-black text-2xl font-bold shadow-royal">RF</div>
+      <h1 class="mt-4 text-3xl font-extrabold text-royal-gold">Join RideFusion</h1>
+      <p class="mt-1 text-sm text-royal-gold">Experience comfy carpooling</p>
+    </div>
+
+    <form id="signupForm" class="space-y-5">
+      <div>
+        <label class="text-sm font-semibold text-royal-gold">Full Name</label>
+        <input type="text" name="name" placeholder="Enter your full name" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
+      </div>
+
+      <div>
+        <label class="text-sm font-semibold text-royal-gold">Email</label>
+        <input type="email" name="email" placeholder="Enter your email address" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
+      </div>
+
+      <div>
+        <label class="text-sm font-semibold text-royal-gold">Phone</label>
+        <input type="tel" name="phone" placeholder="Enter your phone number" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
+      </div>
+
+      <div>
+        <label class="text-sm font-semibold text-royal-gold">Password</label>
+        <input type="password" name="password" placeholder="••••••••" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
+      </div>
+
+      <div>
+        <label class="text-sm font-semibold text-royal-gold">Confirm Password</label>
+        <input type="password" name="confirm" placeholder="••••••••" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
+      </div>
+
+      <div class="pt-3">
+        <button type="submit" class="w-full px-4 py-3 rounded-xl bg-royal-gold text-royal-black font-bold tracking-wide hover:bg-royal-goldDark transition shadow-royal">Sign Up</button>
+      </div>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-royal-gold">Already have an account? <a href="login.html" class="font-bold hover:underline">Log in</a></p>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Sign up successful! (Demo)');
+    });
+  </script>
+</body>
+</html>
