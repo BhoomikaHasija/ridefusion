@@ -1,83 +1,112 @@
-<!doctype html>
-<html lang="en" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RideFusion • Sign Up</title>
-  <meta name="description" content="Sign up for RideFusion pooling service supporting car, bike, and auto rides."/>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            royal: {
-              black: '#0a0a0a',
-              gold: '#d4af37',
-              goldDark: '#b8860b'
-            }
-          },
-          boxShadow: {
-            royal: '0 10px 30px rgba(212,175,55,0.4)'
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    html { font-family: Cinzel, serif; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Fusion - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-royal-black text-royal-gold min-h-screen flex items-center justify-center px-4">
-  <div class="w-full max-w-md bg-royal-black border border-royal-gold rounded-2xl shadow-royal p-8">
-    <div class="mb-6 text-center">
-      <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-royal-gold text-royal-black text-2xl font-bold shadow-royal">RF</div>
-      <h1 class="mt-4 text-3xl font-extrabold text-royal-gold">Join RideFusion</h1>
-      <p class="mt-1 text-sm text-royal-gold">Experience comfy carpooling</p>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">
+                <svg width="176" height="32" viewBox="0 0 176 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="6" fill="#FBBF24"/>
+                    <path d="M8 12h16v8H8v-8z" fill="#1A2332"/>
+                    <circle cx="12" cy="22" r="2" stroke="#1A2332" stroke-width="1" fill="none"/>
+                    <circle cx="20" cy="22" r="2" stroke="#1A2332" stroke-width="1" fill="none"/>
+                    <text x="40" y="21" font-family="Inter, sans-serif" font-weight="600" font-size="16" fill="white">Rider Fusion</text>
+                </svg>
+            </div>
+            <h1 class="welcome-title">Join Rider Fusion</h1>
+            <p class="welcome-subtitle">Create your account and start carpooling today</p>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Create Account</h2>
+            <form>
+                <div class="user-type-selector">
+                    <button type="button" class="user-type-btn active" data-type="passenger">👤 Passenger</button>
+                    <button type="button" class="user-type-btn" data-type="driver">🚗 Driver</button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-input" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="Enter phone number">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="organization" class="form-label">Organization/Workplace (Optional)</label>
+                    <input type="text" id="organization" class="form-input" placeholder="e.g., Chitkara University, Company name">
+                    <div class="optional-text">This helps us match you with relevant rides</div>
+                </div>
+
+                <div class="driver-fields" id="driverFields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="licenseNumber" class="form-label">Driving License Number</label>
+                            <input type="text" id="licenseNumber" class="form-input" placeholder="Enter license number">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleModel" class="form-label">Vehicle Model</label>
+                            <input type="text" id="vehicleModel" class="form-input" placeholder="e.g., Honda City 2020">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+                        <input type="text" id="vehicleNumber" class="form-input" placeholder="e.g., PB10XX1234">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="password" class="form-input" placeholder="Create password">
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm password">
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms" class="checkbox">
+                    <label for="terms" class="checkbox-label">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="signup-btn">Create Account</button>
+
+                <div class="signin-link">
+                    Already have an account? <a href="login.html">Sign in here</a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form id="signupForm" class="space-y-5">
-      <div>
-        <label class="text-sm font-semibold text-royal-gold">Full Name</label>
-        <input type="text" name="name" placeholder="Enter your full name" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
-      </div>
-
-      <div>
-        <label class="text-sm font-semibold text-royal-gold">Email</label>
-        <input type="email" name="email" placeholder="Enter your email address" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
-      </div>
-
-      <div>
-        <label class="text-sm font-semibold text-royal-gold">Phone</label>
-        <input type="tel" name="phone" placeholder="Enter your phone number" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
-      </div>
-
-      <div>
-        <label class="text-sm font-semibold text-royal-gold">Password</label>
-        <input type="password" name="password" placeholder="••••••••" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
-      </div>
-
-      <div>
-        <label class="text-sm font-semibold text-royal-gold">Confirm Password</label>
-        <input type="password" name="confirm" placeholder="••••••••" class="mt-1 w-full rounded-xl border-royal-gold bg-transparent text-royal-gold placeholder-royal-gold/60 focus:ring-royal-gold focus:border-royal-gold" required>
-      </div>
-
-      <div class="pt-3">
-        <button type="submit" class="w-full px-4 py-3 rounded-xl bg-royal-gold text-royal-black font-bold tracking-wide hover:bg-royal-goldDark transition shadow-royal">Sign Up</button>
-      </div>
-    </form>
-
-    <p class="mt-6 text-center text-sm text-royal-gold">Already have an account? <a href="login.html" class="font-bold hover:underline">Log in</a></p>
-  </div>
-
-  <script>
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Sign up successful! (Demo)');
-    });
-  </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
