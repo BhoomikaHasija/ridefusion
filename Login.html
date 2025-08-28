@@ -6,70 +6,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RideFusion - Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      font-family: 'Cinzel', serif;
-    }
-
-    .great-vibes {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Poppins', sans-serif;
     }
   </style>
 </head>
 
-<body class="bg-black min-h-screen flex items-center justify-center">
-  <div class="w-full max-w-md p-8 rounded-3xl shadow-[0_0_25px_rgba(255,215,0,0.4)] bg-gradient-to-br from-black via-zinc-900 to-gray-800 border border-yellow-500">
-    <h2 class="text-4xl font-bold text-center text-yellow-400 mb-8 great-vibes">Welcome to RideFusion</h2>
+<body class="relative min-h-screen flex items-center justify-center bg-black">
 
+  <!-- Background Image -->
+  <div class="absolute inset-0 bg-[url('https://images.pexels.com/photos/11901454/pexels-photo-11901454.jpeg')] bg-cover bg-center"></div>
+  
+  <!-- Dark Overlay -->
+  <div class="absolute inset-0 bg-black/75"></div>
+
+  <!-- Login Card -->
+  <div class="relative w-full max-w-md p-10 rounded-3xl shadow-[0_0_25px_rgba(6,182,212,0.6)] bg-gradient-to-br from-black/90 via-gray-900/90 to-gray-800/95 border border-orange-500/70">
+    
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-center text-orange-300 mb-8 tracking-wide drop-shadow-[0_0_8px_rgba(249,115,22,0.7)]">
+      RideFusion Login
+    </h2>
+
+    <!-- Form -->
     <form class="space-y-6">
+      <!-- Email -->
       <div>
-        <label for="email" class="block text-sm font-medium text-yellow-300">Email address</label>
+        <label for="email" class="block text-sm font-medium text-cyan-300">Email Address</label>
         <input
           id="email"
           name="email"
           type="email"
           placeholder="Enter your email"
           required
-          class="mt-1 block w-full px-4 py-3 bg-black border border-yellow-400 text-yellow-100 placeholder-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-md hover:shadow-yellow-500/20 transition"
+          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-cyan-400 text-cyan-100 placeholder-cyan-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-md hover:shadow-[0_0_12px_rgba(6,182,212,0.5)] transition"
         />
       </div>
 
+      <!-- Password -->
       <div>
-        <label for="password" class="block text-sm font-medium text-yellow-300">Password</label>
+        <label for="password" class="block text-sm font-medium text-cyan-300">Password</label>
         <input
           id="password"
           name="password"
           type="password"
           placeholder="Enter your password"
           required
-          class="mt-1 block w-full px-4 py-3 bg-black border border-yellow-400 text-yellow-100 placeholder-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-md hover:shadow-yellow-500/20 transition"
+          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-cyan-400 text-cyan-100 placeholder-cyan-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-md hover:shadow-[0_0_12px_rgba(6,182,212,0.5)] transition"
         />
       </div>
 
-      <div class="flex items-center justify-between">
-        <div class="text-sm">
-          <a href="#" class="font-medium text-yellow-400 hover:text-yellow-300">Forgot your password?</a>
-        </div>
+      <!-- Forgot Password -->
+      <div class="flex items-center justify-end">
+        <a href="#" class="text-sm font-medium text-orange-300 hover:text-orange-400">Forgot Password?</a>
       </div>
 
-      <div>
-        <button
-          type="submit"
-          class="w-full py-3 px-6 bg-yellow-500 text-black text-lg font-semibold rounded-lg shadow-lg hover:bg-yellow-400 hover:shadow-yellow-500/40 transition duration-300"
-        >
-          Login
-        </button>
-      </div>
+      <!-- Button -->
+      <button
+        type="submit"
+        class="w-full py-3 px-6 bg-orange-300 text-black text-lg font-semibold rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.7)] hover:bg-orange-400 hover:shadow-[0_0_25px_rgba(249,115,22,1)] transition duration-300"
+      >
+        Login
+      </button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-yellow-200">
-      Don't have an account?
-      <a href="#" class="font-semibold text-yellow-400 hover:text-yellow-300">Sign up</a>
+    <!-- Signup Link -->
+    <p class="mt-6 text-center text-sm text-cyan-200">
+      Don’t have an account?
+      <a href="#" class="font-semibold text-orange-300 hover:text-orange-400">Sign up</a>
     </p>
   </div>
 </body>
-
 </html>
 
