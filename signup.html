@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Fusion - Sign Up</title>
+    <style>
+        /* css here---- */
+        
+
+
+
+
+
+
+
+    </style> 
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">
+                <svg width="176" height="32" viewBox="0 0 176 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="6" fill="#FBBF24"/>
+                    <path d="M8 12h16v8H8v-8z" fill="#1A2332"/>
+                    <circle cx="12" cy="22" r="2" stroke="#1A2332" stroke-width="1" fill="none"/>
+                    <circle cx="20" cy="22" r="2" stroke="#1A2332" stroke-width="1" fill="none"/>
+                    <text x="40" y="21" font-family="Inter, sans-serif" font-weight="600" font-size="16" fill="white">Rider Fusion</text>
+                </svg>
+            </div>
+            <h1 class="welcome-title">Join Rider Fusion</h1>
+            <p class="welcome-subtitle">Create your account and start carpooling today</p>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Create Account</h2>
+            <form>
+                <div class="user-type-selector">
+                    <button type="button" class="user-type-btn active" data-type="passenger">👤 Passenger</button>
+                    <button type="button" class="user-type-btn" data-type="driver">🚗 Driver</button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-input" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="Enter phone number">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="organization" class="form-label">Organization/Workplace (Optional)</label>
+                    <input type="text" id="organization" class="form-input" placeholder="e.g., Chitkara University, Company name">
+                    <div class="optional-text">This helps us match you with relevant rides</div>
+                </div>
+
+                <div class="driver-fields" id="driverFields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="licenseNumber" class="form-label">Driving License Number</label>
+                            <input type="text" id="licenseNumber" class="form-input" placeholder="Enter license number">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleModel" class="form-label">Vehicle Model</label>
+                            <input type="text" id="vehicleModel" class="form-input" placeholder="e.g., Honda City 2020">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+                        <input type="text" id="vehicleNumber" class="form-input" placeholder="e.g., PB10XX1234">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="password" class="form-input" placeholder="Create password">
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm password">
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms" class="checkbox">
+                    <label for="terms" class="checkbox-label">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="signup-btn">Create Account</button>
+
+                <div class="signin-link">
+                    Already have an account? <a href="login.html">Sign in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // js will come here
+
+        
+    </script>
+</body>
+</html>
+
 
