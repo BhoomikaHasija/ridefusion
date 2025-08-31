@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer a Ride - RidePulse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .map-pin { animation: bounce 2s infinite; }
+    @keyframes bounce {
+      0%,20%,50%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+    .floating { animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-20px);} }
+
+    .glass { background: rgba(255,215,0,0.1); backdrop-filter: blur(10px); border:1px solid rgba(255,215,0,0.2);}
+    .glass-dark { background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); border:1px solid rgba(255,215,0,0.3);}
+    .glass-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); border:1px solid rgba(255,215,0,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+    .golden-glow { box-shadow:0 0 30px rgba(255,215,0,0.3);}
+    .golden-glow-strong { box-shadow:0 0 50px rgba(255,215,0,0.5);}
+    .text-golden { color:#FFD700;}
+    .text-golden-light { color:#FFF8DC;}
+    .bg-golden-gradient { background: linear-gradient(135deg,#FFD700,#FFA500,#FF8C00);}
+    .bg-golden-dark-gradient { background: linear-gradient(135deg,#B8860B,#DAA520,#FFD700);}
+    .shimmer { position:relative; overflow:hidden; }
+    .shimmer::before {
+      content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+      background: linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent);
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer { 0%{left:-100%;} 100%{left:100%;}}
+    .particle { position:absolute; width:4px; height:4px; background:#FFD700; border-radius:50%; animation: particle-float 8s infinite; }
+    @keyframes particle-float {
+      0%,100% { transform: translateY(100vh) translateX(0); opacity:0;}
+      10%,90% { opacity:1;}
+      50% { transform: translateY(-10px) translateX(50px);}
+    }
+    .golden-border { border-image:linear-gradient(45deg,#FFD700,#FFA500,#FFD700) 1; }
+    @keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+    .animate-marquee { animation: marquee 10s linear infinite; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-x-hidden">
+
+  <!-- Floating Particles -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="particle" style="left:10%;animation-delay:0s;"></div>
+    <div class="particle" style="left:20%;animation-delay:1s;"></div>
+    <div class="particle" style="left:30%;animation-delay:2s;"></div>
+    <div class="particle" style="left:40%;animation-delay:3s;"></div>
+    <div class="particle" style="left:50%;animation-delay:4s;"></div>
+    <div class="particle" style="left:60%;animation-delay:5s;"></div>
+    <div class="particle" style="left:70%;animation-delay:6s;"></div>
+    <div class="particle" style="left:80%;animation-delay:7s;"></div>
+    <div class="particle" style="left:90%;animation-delay:8s;"></div>
+    <img src="https://images.pexels.com/photos/4126136/pexels-photo-4126136.jpeg" alt="City night traffic" />
+  </div>
+
+  <!-- Navbar -->
+  <header class="glass-dark shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-golden-gradient rounded-full flex items-center justify-center golden-glow">
+          <span class="text-xl font-bold text-black">R</span>
+        </div>
+        <h1 class="text-2xl font-bold text-golden">RidePulse</h1>
+      </div>
+      <nav class="space-x-6 flex items-center">
+        <a href="#" class="hover:text-golden transition">Home</a>
+        <a href="#" class="hover:text-golden transition">Book a Ride</a>
+        <a href="#" class="text-golden font-semibold">Offer a Ride</a>
+        <a href="#" class="hover:text-golden transition">About</a>
+        <a href="#" class="hover:text-golden transition">Contact</a>
+        <button class="ml-4 px-6 py-2 bg-golden-gradient rounded-lg hover:opacity-90 transition font-semibold shadow-lg text-black golden-glow">
+          Profile
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative py-20 px-6 text-center">
+    <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 shimmer">
+      Offer Your <span class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">Ride</span>
+    </h2>
+    <p class="text-xl text-yellow-400 max-w-3xl mx-auto whitespace-nowrap inline-block ">
+      Share your journey, earn money, and help build a sustainable transportation network
+    </p>
+  </section>
+
+  <!-- Main Content -->
+  <section class="max-w-7xl mx-auto px-6 pb-20 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      
+      <!-- LEFT: Form -->
+      <div class="space-y-8">
+        <!-- Route Planning -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6 flex items-center">🗺️ Plan Your Route</h3>
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4 glass rounded-lg p-4">
+              <div class="w-4 h-4 bg-green-500 rounded-full golden-glow"></div>
+              <input type="text" placeholder="From: Enter pickup location" class="bg-transparent text-white flex-1 outline-none text-lg placeholder-gray-400">
+              <button class="text-golden hover:text-yellow-300">📍</button>
+            </div>
+            <div class="flex justify-center">
+              <div class="w-px h-8 bg-gradient-to-b from-green-500 via-yellow-500 to-red-500"></div>
+            </div>
+            <div class="flex items-center space-x-4 glass rounded-lg p-4">
+              <div class="w-4 h-4 bg-red-500 rounded-full golden-glow"></div>
+              <input type="text" placeholder="To: Enter destination" class="bg-transparent text-white flex-1 outline-none text-lg placeholder-gray-400">
+              <button class="text-golden hover:text-yellow-300">📍</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip Details -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6">⚙️ Trip Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-golden-light mb-2 font-semibold">📅 Departure Date</label>
+              <input type="date" class="w-full glass rounded-lg p-3 text-white outline-none">
+            </div>
+            <div>
+              <label class="block text-golden-light mb-2 font-semibold">🕐 Departure Time</label>
+              <input type="time" class="w-full glass rounded-lg p-3 text-white outline-none">
+            </div>
+            <div>
+              <label class="block text-golden-light mb-2 font-semibold">🪑 Available Seats</label>
+              <select class="w-full glass rounded-lg p-3 text-white outline-none">
+                <option>1 Seat</option><option>2 Seats</option><option>3 Seats</option><option>4+ Seats</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-golden-light mb-2 font-semibold">💰 Price per Seat</label>
+              <input type="number" placeholder="₹299" class="w-full glass rounded-lg p-3 text-white outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle Selection -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6">🚗 Choose Vehicle Type</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <button class="bg-golden-gradient rounded-xl p-4 text-center text-black golden-glow-strong">🚗 Car<br><span class="text-xs">4-6 seats</span></button>
+            <button class="glass rounded-xl p-4 text-center">🏍️ Bike<br><span class="text-xs">1 seat</span></button>
+            <button class="glass rounded-xl p-4 text-center">🛺 Auto<br><span class="text-xs">2-3 seats</span></button>
+            <button class="glass rounded-xl p-4 text-center">🚕 Premium<br><span class="text-xs">4 seats</span></button>
+          </div>
+        </div>
+
+        <!-- Safety Preferences -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6">🛡️ Safety Preferences</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 👩 Women-only ride</label>
+            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox" checked> ✅ Verified riders only</label>
+            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 🚫 No smoking</label>
+            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 🎵 Music allowed</label>
+          </div>
+        </div>
+
+        <!-- Additional Notes -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6">📝 Additional Information</h3>
+          <textarea placeholder="Add any special instructions..." class="w-full glass rounded-lg p-4 text-white h-32 resize-none"></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button class="flex-1 bg-golden-gradient text-black py-4 rounded-xl font-semibold text-lg golden-glow-strong">🚀 Post Your Ride</button>
+          <button class="flex-1 border-2 border-yellow-500 text-golden py-4 rounded-xl font-semibold text-lg glass">📅 Schedule Later</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Info -->
+      <div class="space-y-8">
+        <!-- Route Preview Map -->
+        <div class="glass-card rounded-2xl overflow-hidden golden-glow">
+          <div class="bg-golden-gradient px-6 py-4"><h3 class="text-xl font-bold text-black">🗺️ Route Preview</h3></div>
+          <div class="relative h-80 bg-black/40">
+            <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image:url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80');"></div>
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 320">
+              <path d="M80 260 Q200 160 320 80" stroke="#FFD700" stroke-width="4" fill="none" stroke-dasharray="8,4"/>
+            </svg>
+            <div class="absolute bottom-16 left-16 map-pin"><div class="bg-green-500 w-6 h-6 rounded-full border-3 border-white"></div></div>
+            <div class="absolute top-16 right-16 map-pin"><div class="bg-red-500 w-6 h-6 rounded-full border-3 border-white"></div></div>
+          </div>
+        </div>
+
+        <!-- Live Activity -->
+        <div class="glass-card rounded-2xl p-6 golden-glow">
+          <h3 class="text-xl font-bold text-golden mb-4">📊 Live Activity</h3>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="glass p-4"><div class="text-2xl font-bold text-golden">12</div><div class="text-gray-400 text-sm">Drivers</div></div>
+            <div class="glass p-4"><div class="text-2xl font-bold text-golden">28</div><div class="text-gray-400 text-sm">Looking</div></div>
+            <div class="glass p-4"><div class="text-2xl font-bold text-golden">₹450</div><div class="text-gray-400 text-sm">Avg. Earning</div></div>
+          </div>
+        </div>
+
+        <!-- Vehicle Options -->
+        <div class="glass-card rounded-2xl p-8 golden-glow">
+          <h3 class="text-2xl font-bold text-golden mb-6">🚙 Your Vehicle Options</h3>
+          <div class="space-y-4">
+            <div class="glass p-4 border-2 border-yellow-500">Standard Car • ₹8-12/km</div>
+            <div class="glass p-4 border">Bike Ride • ₹3-5/km</div>
+            <div class="glass p-4 border">Premium Cab • ₹15-20/km</div>
+          </div>
+        </div>
+
+        <!-- Earnings Calculator -->
+        <div class="glass-card rounded-2xl p-8 golden-glow-strong">
+          <h3 class="text-2xl font-bold text-golden mb-6">💰 Earnings Calculator</h3>
+          <div class="glass-dark p-4">
+            <div class="flex justify-between"><span>Distance:</span><span>245 km</span></div>
+            <div class="flex justify-between"><span>Seats:</span><span>3</span></div>
+            <div class="flex justify-between"><span>Price/Seat:</span><span>₹299</span></div>
+            <hr class="border-gray-600 my-2">
+            <div class="flex justify-between font-bold text-green-400">Total: ₹897</div>
+          </div>
+        </div>
+
+        <!-- Your Stats -->
+        <div class="glass-card rounded-2xl p-6 golden-glow">
+          <h3 class="text-xl font-bold text-golden mb-4">📈 Your Stats</h3>
+          <p class="text-gray-400">Total rides offered: 24<br>Earnings this month: ₹12,450</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
