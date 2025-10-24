@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,73 +10,306 @@
     body {
       font-family: 'Poppins', sans-serif;
     }
+    .error-message {
+      display: none;
+      color: #ff4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      animation: shake 0.3s;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .success-message {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+    }
+    .error-box {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
   </style>
 </head>
-
 <body class="relative min-h-screen flex items-center justify-center bg-black">
-
   <!-- Background Image -->
   <div class="absolute inset-0 bg-[url('https://images.pexels.com/photos/11901454/pexels-photo-11901454.jpeg')] bg-cover bg-center"></div>
   
   <!-- Dark Overlay -->
   <div class="absolute inset-0 bg-black/75"></div>
-
+  
   <!-- Login Card -->
-  <div class="relative w-full max-w-md p-10 rounded-3xl shadow-[0_0_25px_rgba(6,182,212,0.6)] bg-gradient-to-br from-black/90 via-gray-900/90 to-gray-800/95 border border-orange-500/70">
+  <div class="relative w-full max-w-md p-10 rounded-3xl shadow-[0_0_25px_rgba(212,175,55,0.6)] bg-gradient-to-br from-black/90 via-gray-900/90 to-gray-800/95 border border-yellow-600/70">
     
     <!-- Title -->
-    <h2 class="text-3xl font-bold text-center text-orange-300 mb-8 tracking-wide drop-shadow-[0_0_8px_rgba(249,115,22,0.7)]">
+    <h2 class="text-3xl font-bold text-center text-yellow-400 mb-8 tracking-wide drop-shadow-[0_0_8px_rgba(255,193,7,0.7)]">
       RideFusion Login
     </h2>
-
+    
     <!-- Form -->
-    <form class="space-y-6">
+    <form id="loginForm" class="space-y-6">
       <!-- Email -->
       <div>
-        <label for="email" class="block text-sm font-medium text-cyan-300">Email Address</label>
+        <label for="email" class="block text-sm font-medium text-yellow-400">Email Address</label>
         <input
           id="email"
           name="email"
           type="email"
           placeholder="Enter your email"
           required
-          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-cyan-400 text-cyan-100 placeholder-cyan-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-md hover:shadow-[0_0_12px_rgba(6,182,212,0.5)] transition"
+          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-md hover:shadow-[0_0_12px_rgba(212,175,55,0.5)] transition"
         />
+        <span class="error-message" id="emailError">Please enter a valid email</span>
       </div>
-
+      
       <!-- Password -->
       <div>
-        <label for="password" class="block text-sm font-medium text-cyan-300">Password</label>
+        <label for="password" class="block text-sm font-medium text-yellow-400">Password</label>
         <input
           id="password"
           name="password"
           type="password"
           placeholder="Enter your password"
           required
-          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-cyan-400 text-cyan-100 placeholder-cyan-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-md hover:shadow-[0_0_12px_rgba(6,182,212,0.5)] transition"
+          class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-md hover:shadow-[0_0_12px_rgba(212,175,55,0.5)] transition"
         />
+        <span class="error-message" id="passwordError">Password is required</span>
       </div>
-
+      
       <!-- Forgot Password -->
       <div class="flex items-center justify-end">
-        <a href="#" class="text-sm font-medium text-orange-300 hover:text-orange-400">Forgot Password?</a>
+        <a href="#" class="text-sm font-medium text-yellow-400 hover:text-yellow-300 transition duration-200">Forgot Password?</a>
       </div>
-
+      
+      <!-- Message Box -->
+      <div id="messageBox" class="hidden p-4 rounded-xl text-center text-sm font-medium"></div>
+      
       <!-- Button -->
       <button
         type="submit"
-        class="w-full py-3 px-6 bg-orange-300 text-black text-lg font-semibold rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.7)] hover:bg-orange-400 hover:shadow-[0_0_25px_rgba(249,115,22,1)] transition duration-300"
+        id="loginBtn"
+        class="w-full py-3 px-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-lg font-semibold rounded-xl shadow-[0_0_15px_rgba(255,193,7,0.7)] hover:from-yellow-400 hover:to-yellow-500 hover:shadow-[0_0_25px_rgba(255,193,7,1)] transform hover:scale-105 transition duration-300"
       >
         Login
       </button>
     </form>
-
+    
     <!-- Signup Link -->
-    <p class="mt-6 text-center text-sm text-cyan-200">
-      Don’t have an account?
-      <a href="#" class="font-semibold text-orange-300 hover:text-orange-400">Sign up</a>
+    <p class="mt-6 text-center text-sm text-gray-300">
+      Don't have an account?
+      <a href="finalsignup.html" class="font-semibold text-yellow-400 hover:text-yellow-300 transition duration-200">Sign up</a>
     </p>
   </div>
+
+  <script>
+    // ========================================
+    // JAVASCRIPT CODE - Login Functionality
+    // ========================================
+
+    // ===== JS PROGRAMMING BASICS - Variables =====
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const messageBox = document.getElementById('messageBox');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // API URL constant
+    const API_URL = 'http://localhost:3000';
+
+    // ===== JS VALIDATION METHODS =====
+
+    // Function to validate email format
+    function validateEmail(email) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(email);
+    }
+
+    // Function to validate password (not empty)
+    function validatePassword(password) {
+      return password.trim().length > 0;
+    }
+
+    // ===== DOM MANIPULATION - Show/Hide Errors =====
+
+    // Function to show error message
+    function showError(errorElement, inputElement) {
+      errorElement.style.display = 'block';
+      inputElement.style.borderColor = '#ff4444';
+    }
+
+    // Function to hide error message
+    function hideError(errorElement, inputElement) {
+      errorElement.style.display = 'none';
+      inputElement.style.borderColor = '#ca8a04';
+    }
+
+    // Function to show message box
+    function showMessage(message, type) {
+      messageBox.textContent = message;
+      messageBox.classList.remove('hidden');
+      
+      if (type === 'success') {
+        messageBox.className = 'success-message p-4 rounded-xl text-center text-sm font-medium';
+      } else {
+        messageBox.className = 'error-box p-4 rounded-xl text-center text-sm font-medium';
+      }
+    }
+
+    // ===== REAL-TIME VALIDATION (DOM Manipulation) =====
+
+    // Email validation on blur
+    emailInput.addEventListener('blur', function() {
+      if (!validateEmail(emailInput.value)) {
+        showError(emailError, emailInput);
+      } else {
+        hideError(emailError, emailInput);
+      }
+    });
+
+    // Password validation on blur
+    passwordInput.addEventListener('blur', function() {
+      if (!validatePassword(passwordInput.value)) {
+        showError(passwordError, passwordInput);
+      } else {
+        hideError(passwordError, passwordInput);
+      }
+    });
+
+    // Clear errors on input
+    emailInput.addEventListener('input', function() {
+      hideError(emailError, emailInput);
+      messageBox.classList.add('hidden');
+    });
+
+    passwordInput.addEventListener('input', function() {
+      hideError(passwordError, passwordInput);
+      messageBox.classList.add('hidden');
+    });
+
+    // ===== FORM SUBMISSION WITH FETCH API (REST API) =====
+
+    loginForm.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form values (Variables)
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      // Validate inputs (Control Flow)
+      let isValid = true;
+
+      if (!validateEmail(email)) {
+        showError(emailError, emailInput);
+        isValid = false;
+      }
+
+      if (!validatePassword(password)) {
+        showError(passwordError, passwordInput);
+        isValid = false;
+      }
+
+      // If validation fails, stop here
+      if (!isValid) {
+        showMessage('Please fix the errors above', 'error');
+        return;
+      }
+
+      // Disable button during login
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+
+      try {
+        // ===== FETCH API - GET request to JSON Server =====
+        const response = await fetch(`${API_URL}/users`);
+        
+        // Control Flow - check if request successful
+        if (!response.ok) {
+          throw new Error('Failed to connect to server');
+        }
+
+        // Parse JSON response (JSON Objects)
+        const users = await response.json();
+
+        // ===== ARRAY METHOD - Find user with matching credentials =====
+        const user = users.find(u => u.email === email && u.password === password);
+
+        // Control Flow - check if user found
+        if (user) {
+          // ===== SUCCESS - Store user in localStorage =====
+          // Convert JSON object to string for storage
+          localStorage.setItem('currentUser', JSON.stringify(user));
+
+          // Show success message (DOM Manipulation)
+          showMessage('✅ Login successful! Redirecting...', 'success');
+
+          // Redirect after 1.5 seconds
+          setTimeout(function() {
+            window.location.href = 'finalbookride.html';
+          }, 1500);
+
+        } else {
+          // ===== FAILURE - Invalid credentials =====
+          showMessage('❌ Invalid email or password', 'error');
+          
+          // Re-enable button
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+        }
+
+      } catch (error) {
+        // ===== ERROR HANDLING =====
+        console.error('Login error:', error);
+        showMessage('🔴 Connection error. Make sure JSON Server is running on port 3000!', 'error');
+        
+        // Re-enable button
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      }
+    });
+
+    // ===== CHECK IF ALREADY LOGGED IN =====
+    // Function to check localStorage (runs when page loads)
+    function checkExistingLogin() {
+      const currentUserString = localStorage.getItem('currentUser');
+      
+      // Control Flow
+      if (currentUserString) {
+        // User already logged in, redirect
+        const currentUser = JSON.parse(currentUserString);
+        console.log('User already logged in:', currentUser.name);
+        // Uncomment below to auto-redirect
+        // window.location.href = 'finalbookride.html';
+      }
+    }
+
+    // Run check when page loads
+    checkExistingLogin();
+
+    // ===== DEMO: Add test user button (for testing purposes) =====
+    // This creates a test user if you haven't signed up yet
+    function addTestButton() {
+      const testBtn = document.createElement('button');
+      testBtn.textContent = '🧪 Use Test Account';
+      testBtn.className = 'w-full mt-4 py-2 px-4 bg-gray-700 text-yellow-400 text-sm rounded-lg hover:bg-gray-600 transition';
+      testBtn.type = 'button';
+      
+      testBtn.addEventListener('click', function() {
+        emailInput.value = 'test@ridefusion.com';
+        passwordInput.value = 'test123';
+        showMessage('Test credentials filled. Click Login or create this user in signup page first!', 'success');
+      });
+      
+      loginForm.appendChild(testBtn);
+    }
+
+    // Uncomment to add test button
+    // addTestButton();
+
+  </script>
 </body>
 </html>
-
