@@ -1,0 +1,71 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Test User",
+      "email": "test@ridefusion.com",
+      "password": "test123",
+      "phone": "9876543210",
+      "studentId": "CSE2024001",
+      "isStudent": true,
+      "createdAt": "2025-10-25T10:00:00.000Z"
+    }
+  ],
+  "rides": [
+    {
+      "id": 1,
+      "driverId": 1,
+      "driverName": "Rajesh Kumar",
+      "driverPhone": "9988776655",
+      "vehicleType": "Car",
+      "from": "Chitkara University",
+      "to": "Rajpura Railway Station",
+      "date": "2025-10-28",
+      "time": "09:00",
+      "seats": 4,
+      "pricePerSeat": 50,
+      "bookedSeats": 0,
+      "passengers": [],
+      "notes": "AC available",
+      "createdAt": "2025-10-25T08:00:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "driverId": 1,
+      "driverName": "Priya Sharma",
+      "driverPhone": "9876543211",
+      "vehicleType": "Auto",
+      "from": "Rajpura Bus Stand",
+      "to": "Chitkara University",
+      "date": "2025-10-27",
+      "time": "08:30",
+      "seats": 3,
+      "pricePerSeat": 30,
+      "bookedSeats": 0,
+      "passengers": [],
+      "notes": "",
+      "createdAt": "2025-10-25T09:00:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "driverId": 1,
+      "driverName": "Amit Singh",
+      "driverPhone": "9876543212",
+      "vehicleType": "Bike",
+      "from": "Shambhu Barrier",
+      "to": "Chitkara University",
+      "date": "2025-10-29",
+      "time": "07:30",
+      "seats": 1,
+      "pricePerSeat": 20,
+      "bookedSeats": 0,
+      "passengers": [],
+      "notes": "Helmet provided",
+      "createdAt": "2025-10-25T09:30:00.000Z",
+      "status": "active"
+    }
+  ],
+  "bookings": []
+}
