@@ -361,3 +361,226 @@
                 </div>
               </div>
             </div>
+<!-- Details -->
+            <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">📅</span>
+                <span>${ride.date}</span>
+              </div>
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">🕐</span>
+                <span>${ride.time}</span>
+              </div>
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">📞</span>
+                <span>${ride.driverPhone}</span>
+              </div>
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">💺</span>
+                <span>${ride.bookedSeats}/${ride.seats} booked</span>
+              </div>
+            </div>
+            
+            ${ride.notes ? `
+              <div class="mb-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                <p class="text-blue-300 text-sm">📝 ${ride.notes}</p>
+              </div>
+            ` : ''}
+            
+            <!-- Price -->
+            <div class="mb-4 p-4 bg-gradient-to-r from-yellow-600/20 to-yellow-500/20 rounded-lg border border-yellow-500/50">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-300">Price per seat:</span>
+                <div class="text-right">
+                  <span class="text-2xl font-bold text-yellow-400">₹${priceInfo.final}</span>
+                  ${priceInfo.isDiscounted ? `
+                    <div class="text-xs">
+                      <span class="line-through text-gray-500">₹${priceInfo.original}</span>
+                      <span class="text-green-400 font-semibold ml-2">Save ₹${priceInfo.discount}!</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Book Button -->
+            <button 
+              onclick="bookRide(${ride.id}, ${priceInfo.final}, '${ride.driverName}', '${ride.from}', '${ride.to}')" 
+              class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition"
+              ${availableSeats === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+              ${availableSeats === 0 ? '🚫 Fully Booked' : '🎫 Book This Ride'}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ===== BOOK RIDE FUNCTION WITH FETCH API (POST & PUT) =====
+    async function bookRide(rideId, finalPrice, driverName, from, to) {
+      // Confirmation dialog
+      const confirmMessage = `
+🎫 Confirm Booking
+
+Driver: ${driverName}
+Route: ${from} → ${to}
+Price: ₹${finalPrice}
+
+Proceed with booking?
+      `;
+      
+      if (!confirm(confirmMessage)) {
+        return;
+      }
+
+      // Show loading
+      const bookButtons = document.querySelectorAll('button');
+      bookButtons.forEach(btn => btn.disabled = true);
+
+      try {
+        // 1. GET ride details
+        const rideResponse = await fetch(${API_URL}/rides/${rideId});
+        const ride = await rideResponse.json();
+
+        // Control Flow - check seat availability
+        if (ride.bookedSeats >= ride.seats) {
+          alert('❌ Sorry, this ride is fully booked!');
+          bookButtons.forEach(btn => btn.disabled = false);
+          return;
+        }
+
+        // 2. POST booking record (JSON Object)
+        const bookingData = {
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userEmail: currentUser.email,
+          userPhone: currentUser.phone,
+          rideId: rideId,
+          driverName: driverName,
+          route: ${from} → ${to},
+          amount: finalPrice,
+          bookingDate: new Date().toISOString(),
+          rideDate: ride.date,
+          rideTime: ride.time,
+          status: 'confirmed'
+        };
+
+        const bookingResponse = await fetch(${API_URL}/bookings, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bookingData)
+        });
+
+        // Control Flow
+        if (!bookingResponse.ok) {
+          throw new Error('Booking failed');
+        }
+
+        const newBooking = await bookingResponse.json();
+
+        // 3. PUT - Update ride to increase booked seats
+        const updatedRide = {
+          ...ride,
+          bookedSeats: ride.bookedSeats + 1,
+          passengers: [...(ride.passengers || []), currentUser.id]
+        };
+
+        await fetch(${API_URL}/rides/${rideId}, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedRide)
+        });
+
+        // Success message
+        alert(`
+🎉 Booking Successful!
+
+Booking ID: #${newBooking.id}
+Driver: ${driverName}
+Route: ${from} → ${to}
+Amount: ₹${finalPrice}
+Date: ${ride.date} at ${ride.time}
+
+✅ Confirmation sent to ${currentUser.email}
+📱 Driver will contact you at ${currentUser.phone}
+
+Have a safe journey!
+        `);
+        
+        // Reload rides
+        loadRides();
+
+      } catch (error) {
+        console.error('Booking error:', error);
+        alert('❌ Error booking ride. Please try again.');
+        bookButtons.forEach(btn => btn.disabled = false);
+      }
+    }
+
+    // Make bookRide function global
+    window.bookRide = bookRide;
+
+    // ===== SEARCH/FILTER FUNCTIONALITY (Arrays & Control Flow) =====
+    searchBtn.addEventListener('click', function() {
+      const vehicleType = filterVehicle.value;
+      const date = filterDate.value;
+      const location = searchLocation.value.toLowerCase().trim();
+
+      // Array method - filter
+      let filteredRides = allRides.filter(ride => {
+        let matches = true;
+
+        // Only show active rides with available seats
+        if (ride.status !== 'active' || ride.bookedSeats >= ride.seats) {
+          return false;
+        }
+
+        // Control Flow - multiple conditions
+        if (vehicleType && ride.vehicleType !== vehicleType) {
+          matches = false;
+        }
+
+        if (date && ride.date !== date) {
+          matches = false;
+        }
+
+        if (location) {
+          const fromMatch = ride.from.toLowerCase().includes(location);
+          const toMatch = ride.to.toLowerCase().includes(location);
+          if (!fromMatch && !toMatch) {
+            matches = false;
+          }
+        }
+
+        return matches;
+      });
+
+      displayRides(filteredRides);
+      updateStats(filteredRides);
+    });
+
+    // Clear filters
+    filterVehicle.addEventListener('change', () => searchBtn.click());
+    filterDate.addEventListener('change', () => searchBtn.click());
+
+    // Real-time search
+    searchLocation.addEventListener('input', () => {
+      if (searchLocation.value.length >= 3 || searchLocation.value.length === 0) {
+        searchBtn.click();
+      }
+    });
+
+    // ===== SET MINIMUM DATE TO TODAY =====
+    const today = new Date().toISOString().split('T')[0];
+    filterDate.min = today;
+
+    // ===== INITIALIZE PAGE =====
+    if (checkLogin()) {
+      displayWelcomeMessage();
+      loadRides();
+    }
+
+    console.log('🎉 Book Ride page loaded successfully!');
+    console.log('✅ Fetching rides from JSON Server...');
+  </script>
+</body>
+</html>
