@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Ride - RideFusion</title>
+  <title>Offer a Ride - RideFusion</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -25,19 +25,11 @@
       90% { opacity: 1; }
       100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
     }
-    .ride-card {
-      transition: all 0.3s ease;
-    }
-    .ride-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
-    }
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .error-message {
+      display: none;
+      color: #ff4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
@@ -52,7 +44,7 @@
     <div class="particle" style="left:90%;animation-delay:8s;"></div>
   </div>
 
-  <!-- Background Image -->
+  <!-- Background -->
   <div class="fixed inset-0 z-0">
     <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" class="w-full h-full object-cover opacity-40">
     <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/80"></div>
@@ -73,8 +65,8 @@
         </div>
         <div class="hidden md:flex items-center space-x-6">
           <a href="finalhomepage.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
-          <a href="finalbookride.html" class="text-yellow-400 font-semibold">Find Rides</a>
-          <a href="finalofferaride.html" class="text-gray-300 hover:text-yellow-400 transition">Offer Rides</a>
+          <a href="bookaride.html" class="text-gray-300 hover:text-yellow-400 transition">Find Rides</a>
+          <a href="finalofferaride.html" class="text-yellow-400 font-semibold">Offer Rides</a>
           <span id="userInfo" class="text-gray-300"></span>
           <button id="logoutBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
             Logout
@@ -85,502 +77,419 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="relative z-10 max-w-7xl mx-auto px-6 py-8">
+  <div class="relative z-10 max-w-6xl mx-auto px-6 py-8">
     
-    <!-- Welcome Message -->
-    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-yellow-600/30">
-      <h1 class="text-3xl font-bold text-yellow-400 mb-2">Find Your Perfect Ride 🚗</h1>
-      <p class="text-gray-300" id="welcomeMessage">Loading user info...</p>
-    </div>
+    <!-- Offer Ride Form -->
+    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-8 mb-8 border border-yellow-600/30">
+      <h1 class="text-3xl font-bold text-yellow-400 mb-2">Offer a Ride</h1>
+      <p class="text-gray-400 mb-6">Share your journey and earn money!</p>
 
-    <!-- Search Filters -->
-    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-yellow-600/30">
-      <h3 class="text-xl font-bold text-yellow-400 mb-4">🔍 Search & Filter Rides</h3>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <select id="filterVehicle" class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
-          <option value="">All Vehicles</option>
-          <option value="Car">🚗 Car</option>
-          <option value="Auto">🛺 Auto Rickshaw</option>
-          <option value="Bike">🏍️ Bike</option>
-        </select>
-        
-        <input type="date" id="filterDate" class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
-        
-        <input type="text" id="searchLocation" placeholder="🔍 Search location..." class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
-        
-        <button id="searchBtn" class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold rounded-lg px-6 py-3 hover:shadow-lg transition transform hover:scale-105">
-          Search Rides
+      <form id="offerRideForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Vehicle Type -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Vehicle Type *</label>
+            <select id="vehicleType" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+              <option value="">Select vehicle</option>
+              <option value="Car">🚗 Car (AC Comfort)</option>
+              <option value="Auto">🛺 Auto Rickshaw (Budget-Friendly)</option>
+              <option value="Bike">🏍 Bike (Fastest)</option>
+            </select>
+            <span class="error-message" id="vehicleTypeError">Please select a vehicle type</span>
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Contact Number *</label>
+            <input type="tel" id="driverPhone" required placeholder="Your phone number" class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <span class="error-message" id="phoneError">Phone number is required</span>
+          </div>
+
+          <!-- From Location -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Pickup Location *</label>
+            <select id="fromLocation" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+              <option value="">Select pickup point</option>
+              <option value="Chitkara University">Chitkara University</option>
+              <option value="Rajpura Railway Station">Rajpura Railway Station</option>
+              <option value="Rajpura Bus Stand">Rajpura Bus Stand</option>
+              <option value="Shambhu Barrier">Shambhu Barrier</option>
+              <option value="Sirhind">Sirhind</option>
+              <option value="Morinda">Morinda</option>
+            </select>
+            <span class="error-message" id="fromError">Please select pickup location</span>
+          </div>
+
+          <!-- To Location -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Drop Location *</label>
+            <select id="toLocation" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+              <option value="">Select drop point</option>
+              <option value="Chitkara University">Chitkara University</option>
+              <option value="Rajpura Railway Station">Rajpura Railway Station</option>
+              <option value="Rajpura Bus Stand">Rajpura Bus Stand</option>
+              <option value="Shambhu Barrier">Shambhu Barrier</option>
+              <option value="Sirhind">Sirhind</option>
+              <option value="Morinda">Morinda</option>
+            </select>
+            <span class="error-message" id="toError">Please select drop location</span>
+          </div>
+
+          <!-- Date -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Date *</label>
+            <input type="date" id="rideDate" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <span class="error-message" id="dateError">Please select a date</span>
+          </div>
+
+          <!-- Time -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Time *</label>
+            <input type="time" id="rideTime" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <span class="error-message" id="timeError">Please select time</span>
+          </div>
+
+          <!-- Seats -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Available Seats *</label>
+            <input type="number" id="seats" min="1" max="6" required placeholder="How many passengers?" class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <span class="error-message" id="seatsError">Seats must be between 1-6</span>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <label class="block text-yellow-400 mb-2 font-semibold">Price Per Seat (₹) *</label>
+            <input type="number" id="price" min="10" required placeholder="Amount in rupees" class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+            <span class="error-message" id="priceError">Price must be at least ₹10</span>
+            <p class="text-gray-400 text-sm mt-1">Suggested: Car ₹50-100, Auto ₹30-50, Bike ₹20-40</p>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label class="block text-yellow-400 mb-2 font-semibold">Additional Notes (Optional)</label>
+          <textarea id="notes" rows="3" placeholder="Any special instructions? (e.g., AC available, luggage space, etc.)" class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+        </div>
+
+        <!-- Message Box -->
+        <div id="messageBox" class="hidden p-4 rounded-xl text-center text-sm font-medium"></div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold py-4 rounded-xl hover:shadow-lg transform hover:scale-105 transition text-lg">
+          🚗 Publish Ride Offer
         </button>
-      </div>
+      </form>
     </div>
 
-    <!-- Stats Bar -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="bg-gradient-to-r from-green-600/20 to-green-500/20 backdrop-blur-xl rounded-xl p-4 border border-green-500/30">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-green-400 text-sm font-semibold">Available Rides</p>
-            <p class="text-2xl font-bold text-white" id="totalRides">0</p>
-          </div>
-          <div class="text-3xl">🚗</div>
-        </div>
+    <!-- My Offered Rides -->
+    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-8 border border-yellow-600/30">
+      <h2 class="text-2xl font-bold text-yellow-400 mb-4">My Offered Rides</h2>
+      <div id="myRidesContainer" class="space-y-4">
+        <!-- My rides will be loaded here -->
       </div>
-      
-      <div class="bg-gradient-to-r from-blue-600/20 to-blue-500/20 backdrop-blur-xl rounded-xl p-4 border border-blue-500/30">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-blue-400 text-sm font-semibold">Total Seats</p>
-            <p class="text-2xl font-bold text-white" id="totalSeats">0</p>
-          </div>
-          <div class="text-3xl">💺</div>
-        </div>
-      </div>
-      
-      <div class="bg-gradient-to-r from-yellow-600/20 to-yellow-500/20 backdrop-blur-xl rounded-xl p-4 border border-yellow-500/30">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-yellow-400 text-sm font-semibold">Your Discount</p>
-            <p class="text-2xl font-bold text-white" id="userDiscount">0%</p>
-          </div>
-          <div class="text-3xl">🎓</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Loading Indicator -->
-    <div id="loadingIndicator" class="hidden text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-yellow-500 border-t-transparent"></div>
-      <p class="text-gray-400 mt-4">Loading available rides...</p>
-    </div>
-
-    <!-- Available Rides -->
-    <h2 class="text-2xl font-bold text-yellow-400 mb-4">🎯 Available Rides</h2>
-    <div id="ridesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-      <!-- Rides will be loaded here by JavaScript -->
-    </div>
-
-    <!-- No Rides Message -->
-    <div id="noRidesMessage" class="hidden text-center py-12 bg-black/60 backdrop-blur-xl rounded-2xl border border-yellow-600/30">
-      <div class="text-6xl mb-4">😔</div>
-      <p class="text-2xl text-gray-400 mb-4">No rides available</p>
-      <p class="text-gray-500 mb-6">Try adjusting your search filters or check back later</p>
-      <a href="finalofferaride.html">
-        <button class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold rounded-lg hover:shadow-lg transition">
-          🎯 Become a Driver
-        </button>
-      </a>
     </div>
   </div>
 
   <script>
     // ========================================
-    // JAVASCRIPT - BOOK RIDE FUNCTIONALITY
+    // JAVASCRIPT - OFFER RIDE FUNCTIONALITY
     // ========================================
 
     // ===== JS PROGRAMMING BASICS - Variables =====
     const API_URL = 'http://localhost:3000';
     let currentUser = null;
-    let allRides = []; // Array to store all rides
 
     // DOM elements
-    const ridesContainer = document.getElementById('ridesContainer');
-    const welcomeMsg = document.getElementById('welcomeMessage');
+    const offerRideForm = document.getElementById('offerRideForm');
     const userInfo = document.getElementById('userInfo');
     const logoutBtn = document.getElementById('logoutBtn');
-    const filterVehicle = document.getElementById('filterVehicle');
-    const filterDate = document.getElementById('filterDate');
-    const searchLocation = document.getElementById('searchLocation');
-    const searchBtn = document.getElementById('searchBtn');
-    const loadingIndicator = document.getElementById('loadingIndicator');
-    const noRidesMessage = document.getElementById('noRidesMessage');
-    const totalRidesEl = document.getElementById('totalRides');
-    const totalSeatsEl = document.getElementById('totalSeats');
-    const userDiscountEl = document.getElementById('userDiscount');
+    const myRidesContainer = document.getElementById('myRidesContainer');
+    const messageBox = document.getElementById('messageBox');
+    const submitBtn = document.getElementById('submitBtn');
 
-    // ===== CHECK IF USER IS LOGGED IN =====
+    // Form inputs
+    const vehicleTypeInput = document.getElementById('vehicleType');
+    const driverPhoneInput = document.getElementById('driverPhone');
+    const fromLocationInput = document.getElementById('fromLocation');
+    const toLocationInput = document.getElementById('toLocation');
+    const rideDateInput = document.getElementById('rideDate');
+    const rideTimeInput = document.getElementById('rideTime');
+    const seatsInput = document.getElementById('seats');
+    const priceInput = document.getElementById('price');
+    const notesInput = document.getElementById('notes');
+
+    // Error elements
+    const vehicleTypeError = document.getElementById('vehicleTypeError');
+    const phoneError = document.getElementById('phoneError');
+    const fromError = document.getElementById('fromError');
+    const toError = document.getElementById('toError');
+    const dateError = document.getElementById('dateError');
+    const timeError = document.getElementById('timeError');
+    const seatsError = document.getElementById('seatsError');
+    const priceError = document.getElementById('priceError');
+
+    // ===== CHECK LOGIN =====
     function checkLogin() {
       const userString = localStorage.getItem('currentUser');
       
-      // Control Flow
       if (!userString) {
-        alert('⚠️ Please login first to book rides!');
-        window.location.href = 'finallogin.html';
+        alert('Please login first!');
+        window.location.href = 'Login.html';
         return false;
       }
       
       currentUser = JSON.parse(userString);
+      userInfo.textContent = 👤 ${currentUser.name};
+      driverPhoneInput.value = currentUser.phone; // Pre-fill phone
       return true;
     }
 
-    // ===== DOM MANIPULATION - Display Welcome Message =====
-    function displayWelcomeMessage() {
-      if (currentUser.isStudent && currentUser.studentId) {
-        welcomeMsg.innerHTML = Welcome back, <strong>${currentUser.name}</strong>! 🎓 <span class="text-green-400 font-semibold">Your 15% student discount is active!</span>;
-        userDiscountEl.textContent = '15%';
-      } else {
-        welcomeMsg.innerHTML = Welcome back, <strong>${currentUser.name}</strong>! Ready to find your perfect ride?;
-        userDiscountEl.textContent = '0%';
-      }
-      
-      userInfo.textContent = 👤 ${currentUser.name};
-    }
-
-    // ===== LOGOUT FUNCTION =====
+    // ===== LOGOUT =====
     logoutBtn.addEventListener('click', function() {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('currentUser');
-        window.location.href = 'finallogin.html';
+        window.location.href = 'Login.html';
       }
     });
 
-    // ===== CALCULATE STUDENT DISCOUNT (Function) =====
-    function calculatePrice(basePrice) {
-      // Control Flow - check if student
-      if (currentUser.isStudent && currentUser.studentId) {
-        const discount = basePrice * 0.15;
-        const finalPrice = basePrice - discount;
-        return {
-          original: basePrice,
-          final: Math.round(finalPrice),
-          discount: Math.round(discount),
-          isDiscounted: true
-        };
-      }
-      return {
-        original: basePrice,
-        final: basePrice,
-        discount: 0,
-        isDiscounted: false
-      };
+    // ===== JS VALIDATION METHODS - Functions =====
+
+    function validatePhone(phone) {
+      return phone.trim().length === 10 && /^\d+$/.test(phone);
     }
 
-    // ===== FETCH API - GET RIDES FROM JSON SERVER =====
-    async function loadRides() {
-      loadingIndicator.classList.remove('hidden');
-      ridesContainer.innerHTML = '';
-      noRidesMessage.classList.add('hidden');
-
-      try {
-        const response = await fetch(${API_URL}/rides);
-        
-        // Control Flow - check response
-        if (!response.ok) {
-          throw new Error('Failed to fetch rides');
-        }
-
-        allRides = await response.json(); // Store in array
-        
-        // Filter only active rides with available seats
-        const availableRides = allRides.filter(ride => 
-          ride.status === 'active' && ride.bookedSeats < ride.seats
-        );
-        
-        displayRides(availableRides);
-        updateStats(availableRides);
-
-      } catch (error) {
-        console.error('Error loading rides:', error);
-        ridesContainer.innerHTML = `
-          <div class="col-span-3 text-center p-8 bg-red-900/20 rounded-xl border border-red-500">
-            <p class="text-red-400 text-xl mb-2">❌ Error loading rides</p>
-            <p class="text-gray-400 mb-4">Make sure JSON Server is running on port 3000</p>
-            <button onclick="location.reload()" class="px-6 py-2 bg-yellow-600 text-black rounded-lg hover:bg-yellow-500 transition">
-              🔄 Retry
-            </button>
-          </div>
-        `;
-      } finally {
-        loadingIndicator.classList.add('hidden');
-      }
+    function validateSeats(seats) {
+      const num = parseInt(seats);
+      return num >= 1 && num <= 6;
     }
 
-    // ===== UPDATE STATISTICS =====
-    function updateStats(rides) {
-      totalRidesEl.textContent = rides.length;
+    function validatePrice(price) {
+      return parseInt(price) >= 10;
+    }
+
+    // ===== DOM MANIPULATION - Show/Hide Errors =====
+    function showError(errorElement, message) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function hideError(errorElement) {
+      errorElement.style.display = 'none';
+    }
+
+    function showMessage(message, type) {
+      messageBox.textContent = message;
+      messageBox.classList.remove('hidden');
       
-      // Calculate total available seats
-      const totalSeats = rides.reduce((sum, ride) => {
-        return sum + (ride.seats - ride.bookedSeats);
-      }, 0);
-      
-      totalSeatsEl.textContent = totalSeats;
+      if (type === 'success') {
+        messageBox.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+        messageBox.style.border = '1px solid #22c55e';
+        messageBox.style.color = '#22c55e';
+      } else {
+        messageBox.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+        messageBox.style.border = '1px solid #ef4444';
+        messageBox.style.color = '#ef4444';
+      }
+
+      setTimeout(() => messageBox.classList.add('hidden'), 5000);
     }
-
-    // ===== DOM MANIPULATION - Display Rides =====
-    function displayRides(rides) {
-      if (rides.length === 0) {
-        noRidesMessage.classList.remove('hidden');
-        updateStats(rides);
-        return;
-      }
-
-      noRidesMessage.classList.add('hidden');
-
-      // Array method - map to create HTML
-      ridesContainer.innerHTML = rides.map(ride => {
-        const availableSeats = ride.seats - ride.bookedSeats;
-        const priceInfo = calculatePrice(ride.pricePerSeat);
-        
-        // Get vehicle emoji
-        const vehicleEmoji = ride.vehicleType === 'Car' ? '🚗' : 
-                            ride.vehicleType === 'Auto' ? '🛺' : '🏍️';
-        
-        return `
-          <div class="ride-card bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 border border-yellow-600/40 hover:border-yellow-500">
-            <!-- Header -->
-            <div class="flex justify-between items-start mb-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-2xl">
-                  ${vehicleEmoji}
-                </div>
-                <div>
-                  <h3 class="text-xl font-bold text-yellow-400">${ride.driverName}</h3>
-                  <p class="text-gray-400 text-sm">${ride.vehicleType}</p>
-                </div>
-              </div>
-              <span class="bg-green-500 text-black px-3 py-1 rounded-full text-sm font-bold pulse">
-                ${availableSeats} seat${availableSeats > 1 ? 's' : ''}
-              </span>
-            </div>
-            
-            <!-- Route Info -->
-            <div class="space-y-3 mb-4 bg-black/30 rounded-lg p-4">
-              <div class="flex items-start text-gray-300">
-                <span class="mr-2 text-green-400">📍</span>
-                <div class="flex-1">
-                  <p class="text-xs text-gray-500">FROM</p>
-                  <p class="font-semibold">${ride.from}</p>
-                </div>
-              </div>
-              <div class="border-l-2 border-yellow-500 ml-1 h-4"></div>
-              <div class="flex items-start text-gray-300">
-                <span class="mr-2 text-red-400">📍</span>
-                <div class="flex-1">
-                  <p class="text-xs text-gray-500">TO</p>
-                  <p class="font-semibold">${ride.to}</p>
-                </div>
-              </div>
-            </div>
-<!-- Details -->
-            <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
-              <div class="flex items-center text-gray-300">
-                <span class="mr-2">📅</span>
-                <span>${ride.date}</span>
-              </div>
-              <div class="flex items-center text-gray-300">
-                <span class="mr-2">🕐</span>
-                <span>${ride.time}</span>
-              </div>
-              <div class="flex items-center text-gray-300">
-                <span class="mr-2">📞</span>
-                <span>${ride.driverPhone}</span>
-              </div>
-              <div class="flex items-center text-gray-300">
-                <span class="mr-2">💺</span>
-                <span>${ride.bookedSeats}/${ride.seats} booked</span>
-              </div>
-            </div>
-            
-            ${ride.notes ? `
-              <div class="mb-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-                <p class="text-blue-300 text-sm">📝 ${ride.notes}</p>
-              </div>
-            ` : ''}
-            
-            <!-- Price -->
-            <div class="mb-4 p-4 bg-gradient-to-r from-yellow-600/20 to-yellow-500/20 rounded-lg border border-yellow-500/50">
-              <div class="flex items-center justify-between">
-                <span class="text-gray-300">Price per seat:</span>
-                <div class="text-right">
-                  <span class="text-2xl font-bold text-yellow-400">₹${priceInfo.final}</span>
-                  ${priceInfo.isDiscounted ? `
-                    <div class="text-xs">
-                      <span class="line-through text-gray-500">₹${priceInfo.original}</span>
-                      <span class="text-green-400 font-semibold ml-2">Save ₹${priceInfo.discount}!</span>
-                    </div>
-                  ` : ''}
-                </div>
-              </div>
-            </div>
-            
-            <!-- Book Button -->
-            <button 
-              onclick="bookRide(${ride.id}, ${priceInfo.final}, '${ride.driverName}', '${ride.from}', '${ride.to}')" 
-              class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition"
-              ${availableSeats === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-              ${availableSeats === 0 ? '🚫 Fully Booked' : '🎫 Book This Ride'}
-            </button>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // ===== BOOK RIDE FUNCTION WITH FETCH API (POST & PUT) =====
-    async function bookRide(rideId, finalPrice, driverName, from, to) {
-      // Confirmation dialog
-      const confirmMessage = `
-🎫 Confirm Booking
-
-Driver: ${driverName}
-Route: ${from} → ${to}
-Price: ₹${finalPrice}
-
-Proceed with booking?
-      `;
-      
-      if (!confirm(confirmMessage)) {
-        return;
-      }
-
-      // Show loading
-      const bookButtons = document.querySelectorAll('button');
-      bookButtons.forEach(btn => btn.disabled = true);
-
-      try {
-        // 1. GET ride details
-        const rideResponse = await fetch(${API_URL}/rides/${rideId});
-        const ride = await rideResponse.json();
-
-        // Control Flow - check seat availability
-        if (ride.bookedSeats >= ride.seats) {
-          alert('❌ Sorry, this ride is fully booked!');
-          bookButtons.forEach(btn => btn.disabled = false);
-          return;
-        }
-
-        // 2. POST booking record (JSON Object)
-        const bookingData = {
-          userId: currentUser.id,
-          userName: currentUser.name,
-          userEmail: currentUser.email,
-          userPhone: currentUser.phone,
-          rideId: rideId,
-          driverName: driverName,
-          route: ${from} → ${to},
-          amount: finalPrice,
-          bookingDate: new Date().toISOString(),
-          rideDate: ride.date,
-          rideTime: ride.time,
-          status: 'confirmed'
-        };
-
-        const bookingResponse = await fetch(${API_URL}/bookings, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bookingData)
-        });
-
-        // Control Flow
-        if (!bookingResponse.ok) {
-          throw new Error('Booking failed');
-        }
-
-        const newBooking = await bookingResponse.json();
-
-        // 3. PUT - Update ride to increase booked seats
-        const updatedRide = {
-          ...ride,
-          bookedSeats: ride.bookedSeats + 1,
-          passengers: [...(ride.passengers || []), currentUser.id]
-        };
-
-        await fetch(${API_URL}/rides/${rideId}, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedRide)
-        });
-
-        // Success message
-        alert(`
-🎉 Booking Successful!
-
-Booking ID: #${newBooking.id}
-Driver: ${driverName}
-Route: ${from} → ${to}
-Amount: ₹${finalPrice}
-Date: ${ride.date} at ${ride.time}
-
-✅ Confirmation sent to ${currentUser.email}
-📱 Driver will contact you at ${currentUser.phone}
-
-Have a safe journey!
-        `);
-        
-        // Reload rides
-        loadRides();
-
-      } catch (error) {
-        console.error('Booking error:', error);
-        alert('❌ Error booking ride. Please try again.');
-        bookButtons.forEach(btn => btn.disabled = false);
-      }
-    }
-
-    // Make bookRide function global
-    window.bookRide = bookRide;
-
-    // ===== SEARCH/FILTER FUNCTIONALITY (Arrays & Control Flow) =====
-    searchBtn.addEventListener('click', function() {
-      const vehicleType = filterVehicle.value;
-      const date = filterDate.value;
-      const location = searchLocation.value.toLowerCase().trim();
-
-      // Array method - filter
-      let filteredRides = allRides.filter(ride => {
-        let matches = true;
-
-        // Only show active rides with available seats
-        if (ride.status !== 'active' || ride.bookedSeats >= ride.seats) {
-          return false;
-        }
-
-        // Control Flow - multiple conditions
-        if (vehicleType && ride.vehicleType !== vehicleType) {
-          matches = false;
-        }
-
-        if (date && ride.date !== date) {
-          matches = false;
-        }
-
-        if (location) {
-          const fromMatch = ride.from.toLowerCase().includes(location);
-          const toMatch = ride.to.toLowerCase().includes(location);
-          if (!fromMatch && !toMatch) {
-            matches = false;
-          }
-        }
-
-        return matches;
-      });
-
-      displayRides(filteredRides);
-      updateStats(filteredRides);
-    });
-
-    // Clear filters
-    filterVehicle.addEventListener('change', () => searchBtn.click());
-    filterDate.addEventListener('change', () => searchBtn.click());
-
-    // Real-time search
-    searchLocation.addEventListener('input', () => {
-      if (searchLocation.value.length >= 3 || searchLocation.value.length === 0) {
-        searchBtn.click();
-      }
-    });
 
     // ===== SET MINIMUM DATE TO TODAY =====
     const today = new Date().toISOString().split('T')[0];
-    filterDate.min = today;
+    rideDateInput.min = today;
 
-    // ===== INITIALIZE PAGE =====
-    if (checkLogin()) {
-      displayWelcomeMessage();
-      loadRides();
+    // ===== FORM SUBMISSION WITH FETCH API (POST) =====
+    offerRideForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      // Get form values
+      const vehicleType = vehicleTypeInput.value;
+      const driverPhone = driverPhoneInput.value.trim();
+      const fromLocation = fromLocationInput.value;
+      const toLocation = toLocationInput.value;
+      const rideDate = rideDateInput.value;
+      const rideTime = rideTimeInput.value;
+      const seats = seatsInput.value;
+      const price = priceInput.value;
+      const notes = notesInput.value.trim();
+
+      // ===== CONTROL FLOW - Validation =====
+      let isValid = true;
+
+      if (!vehicleType) {
+        showError(vehicleTypeError, 'Please select a vehicle type');
+        isValid = false;
+      }
+
+      if (!validatePhone(driverPhone)) {
+        showError(phoneError, 'Phone must be 10 digits');
+        isValid = false;
+      }
+
+      if (!fromLocation) {
+        showError(fromError, 'Please select pickup location');
+        isValid = false;
+      }
+
+      if (!toLocation) {
+        showError(toError, 'Please select drop location');
+        isValid = false;
+      }
+
+      if (fromLocation === toLocation) {
+        showError(toError, 'Pickup and drop cannot be same!');
+        isValid = false;
+      }
+
+      if (!rideDate) {
+        showError(dateError, 'Please select a date');
+        isValid = false;
+      }
+
+      if (!rideTime) {
+        showError(timeError, 'Please select time');
+        isValid = false;
+      }
+
+      if (!validateSeats(seats)) {
+        showError(seatsError, 'Seats must be between 1-6');
+        isValid = false;
+      }
+
+      if (!validatePrice(price)) {
+        showError(priceError, 'Price must be at least ₹10');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        showMessage('Please fix all errors', 'error');
+        return;
+      }
+
+      // Disable button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Publishing...';
+
+      // ===== JSON OBJECT - Create ride data =====
+      const rideData = {
+        driverId: currentUser.id,
+        driverName: currentUser.name,
+        driverPhone: driverPhone,
+        vehicleType: vehicleType,
+        from: fromLocation,
+        to: toLocation,
+        date: rideDate,
+        time: rideTime,
+        seats: parseInt(seats),
+        pricePerSeat: parseInt(price),
+        bookedSeats: 0,
+        passengers: [],
+        notes: notes,
+        createdAt: new Date().toISOString(),
+        status: 'active'
+      };
+
+      try {
+        // ===== FETCH API - POST request =====
+        const response = await fetch(${API_URL}/rides, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(rideData)
+        });
+
+        if (response.ok) {
+          showMessage('✅ Ride published successfully! Passengers can now book your ride.', 'success');
+          offerRideForm.reset();
+          driverPhoneInput.value = currentUser.phone; // Re-fill phone
+          loadMyRides();
+        } else {
+          showMessage('❌ Error publishing ride. Please try again.', 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('🔴 Connection error. Make sure JSON Server is running!', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚗 Publish Ride Offer';
+      }
+    });
+
+    // ===== FETCH API - GET MY RIDES =====
+    async function loadMyRides() {
+      try {
+        const response = await fetch(${API_URL}/rides?driverId=${currentUser.id});
+        const myRides = await response.json();
+
+        if (myRides.length === 0) {
+          myRidesContainer.innerHTML = '<p class="text-gray-400 text-center py-8">You haven\'t offered any rides yet.</p>';
+          return;
+        }
+
+        // ===== ARRAY METHOD & DOM MANIPULATION =====
+        myRidesContainer.innerHTML = myRides.map(ride => `
+          <div class="bg-gray-900/60 border border-yellow-600/30 rounded-xl p-5">
+            <div class="flex justify-between items-start">
+              <div class="flex-1">
+                <h3 class="text-lg font-bold text-yellow-400">${ride.vehicleType} - ${ride.from} → ${ride.to}</h3>
+                <div class="grid grid-cols-2 gap-2 mt-3 text-sm">
+                  <p class="text-gray-300">📅 ${ride.date} at ${ride.time}</p>
+                  <p class="text-gray-300">💺 ${ride.bookedSeats}/${ride.seats} seats booked</p>
+                  <p class="text-gray-300">💰 ₹${ride.pricePerSeat} per seat</p>
+                  <p class="text-gray-300">📞 ${ride.driverPhone}</p>
+                </div>
+                ${ride.notes ? <p class="text-gray-400 text-sm mt-2">📝 ${ride.notes}</p> : ''}
+              </div>
+              <button onclick="deleteRide(${ride.id})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm ml-4 transition">
+                🗑 Delete
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading rides:', error);
+        myRidesContainer.innerHTML = '<p class="text-red-400 text-center py-8">Error loading your rides</p>';
+      }
     }
 
-    console.log('🎉 Book Ride page loaded successfully!');
-    console.log('✅ Fetching rides from JSON Server...');
+    // ===== FETCH API - DELETE RIDE =====
+    async function deleteRide(rideId) {
+      if (!confirm('Are you sure you want to delete this ride?')) {
+        return;
+      }
+
+      try {
+        await fetch(${API_URL}/rides/${rideId}, {
+          method: 'DELETE'
+        });
+        
+        showMessage('✅ Ride deleted successfully', 'success');
+        loadMyRides();
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('❌ Error deleting ride', 'error');
+      }
+    }
+
+    // Make deleteRide global
+    window.deleteRide = deleteRide;
+
+    // ===== CLEAR ERRORS ON INPUT =====
+    vehicleTypeInput.addEventListener('change', () => hideError(vehicleTypeError));
+    driverPhoneInput.addEventListener('input', () => hideError(phoneError));
+    fromLocationInput.addEventListener('change', () => hideError(fromError));
+    toLocationInput.addEventListener('change', () => hideError(toError));
+    rideDateInput.addEventListener('change', () => hideError(dateError));
+    rideTimeInput.addEventListener('change', () => hideError(timeError));
+    seatsInput.addEventListener('input', () => hideError(seatsError));
+    priceInput.addEventListener('input', () => hideError(priceError));
+
+    // ===== INITIALIZE =====
+    if (checkLogin()) {
+      loadMyRides();
+    }
   </script>
 </body>
-</html>
+</html> yha commit kar de adha, adha mai karduga
