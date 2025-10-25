@@ -1,95 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RideFusion - Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 🌆 Background Image */
     body {
-      background: url('https://a-static.besthdwallpaper.com/traffic-lights-in-new-york-at-night-wallpaper-2880x1800-111012_8.jpg') 
-                  no-repeat center center/cover;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
-
-    /* ✨ Neon Glow Effect for Card */
-    .glow-box {
-      box-shadow: 0 0 15px #fc9802, 0 0 30px #fc9802;
-      transition: all 0.3s ease-in-out;
+    .error-message {
+      display: none;
+      color: #ff4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      animation: shake 0.3s;
     }
-
-    .glow-box:hover {
-      box-shadow: 0 0 25px #fc9802, 0 0 50px #fc9802;
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
     }
-
-    /* 🎬 Fade-in Animation */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-fadeIn {
-      animation: fadeIn 1s ease-in-out;
+    .success-message {
+      display: none;
+      color: #22c55e;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
-
-<body>
-  <div class="bg-black/80 p-8 rounded-2xl glow-box w-96 animate-fadeIn">
-    <!-- 🌟 Attractive Gradient Heading -->
-    <h2 class="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
-      🚗 RideFusion Sign Up
+<body class="relative min-h-screen flex items-center justify-center bg-black">
+  <!-- Background Image -->
+  <div class="absolute inset-0 bg-[url('https://images.pexels.com/photos/11901454/pexels-photo-11901454.jpeg')] bg-cover bg-center"></div>
+  
+  <!-- Dark Overlay -->
+  <div class="absolute inset-0 bg-black/75"></div>
+  
+  <!-- Signup Card -->
+  <div class="relative w-full max-w-2xl p-10 rounded-3xl shadow-[0_0_25px_rgba(212,175,55,0.6)] bg-gradient-to-br from-black/90 via-gray-900/90 to-gray-800/95 border border-yellow-600/70 my-8">
+    
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-center text-yellow-400 mb-2 tracking-wide drop-shadow-[0_0_8px_rgba(255,193,7,0.7)]">
+      Join RideFusion
     </h2>
+    <p class="text-center text-gray-400 mb-6">Create your account to start riding</p>
+    
+    <!-- Form -->
+    <form id="signupForm" class="space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Full Name -->
+        <div>
+          <label for="fullName" class="block text-sm font-medium text-yellow-400">Full Name *</label>
+          <input
+            id="fullName"
+            type="text"
+            placeholder="Enter your full name"
+            required
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="error-message" id="nameError">Name must be at least 3 characters</span>
+        </div>
 
-    <form>
-      <!-- Full Name -->
-      <label class="block text-yellow-600 mb-2">Full Name</label>
-      <input type="text" placeholder="Enter your name"
-        class="w-full p-2 mb-4 rounded-lg border border-yellow-600 bg-transparent text-yellow-100 
-               placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-yellow-400">Email Address *</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="your.email@example.com"
+            required
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="error-message" id="emailError">Please enter a valid email</span>
+        </div>
 
-      <!-- Email -->
-      <label class="block text-yellow-600 mb-2">Email Address</label>
-      <input type="email" placeholder="Enter your email"
-        class="w-full p-2 mb-4 rounded-lg border border-yellow-600 bg-transparent text-yellow-100 
-               placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <!-- Phone -->
+        <div>
+          <label for="phone" class="block text-sm font-medium text-yellow-400">Phone Number *</label>
+          <input
+            id="phone"
+            type="tel"
+            placeholder="10-digit mobile number"
+            required
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="error-message" id="phoneError">Phone must be 10 digits</span>
+        </div>
 
-      <!-- Password -->
-      <label class="block text-yellow-600 mb-2">Password</label>
-      <input type="password" placeholder="Enter your password"
-        class="w-full p-2 mb-4 rounded-lg border border-yellow-600 bg-transparent text-yellow-100 
-               placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <!-- Student ID -->
+        <div>
+          <label for="studentId" class="block text-sm font-medium text-yellow-400">Student ID (Optional)</label>
+          <input
+            id="studentId"
+            type="text"
+            placeholder="For 15% discount"
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="success-message" id="studentSuccess">🎓 Student discount will be applied!</span>
+        </div>
 
-      <!-- Confirm Password -->
-      <label class="block text-yellow-600 mb-2">Confirm Password</label>
-      <input type="password" placeholder="Confirm your password"
-        class="w-full p-2 mb-6 rounded-lg border border-yellow-600 bg-transparent text-yellow-100 
-               placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-yellow-400">Password *</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Minimum 6 characters"
+            required
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="error-message" id="passwordError">Password must be at least 6 characters</span>
+        </div>
 
-      <!-- Sign Up Button -->
-      <button type="submit"
-        class="w-full py-2 rounded-lg bg-yellow-600 text-black font-bold hover:bg-yellow-300 transition">Sign
-        Up</button>
+        <!-- Confirm Password -->
+        <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-yellow-400">Confirm Password *</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Re-enter password"
+            required
+            class="mt-1 block w-full px-4 py-3 bg-black/70 border border-yellow-600 text-yellow-100 placeholder-yellow-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+          />
+          <span class="error-message" id="confirmPasswordError">Passwords do not match</span>
+        </div>
+      </div>
+
+      <!-- Message Box -->
+      <div id="messageBox" class="hidden p-4 rounded-xl text-center text-sm font-medium"></div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        id="signupBtn"
+        class="w-full py-3 px-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-lg font-semibold rounded-xl shadow-[0_0_15px_rgba(255,193,7,0.7)] hover:from-yellow-400 hover:to-yellow-500 hover:shadow-[0_0_25px_rgba(255,193,7,1)] transform hover:scale-105 transition duration-300"
+      >
+        Create Account
+      </button>
     </form>
-
-    <!-- Redirect to Login -->
-    <p class="text-center text-yellow-500 mt-4 text-sm">
+    
+    <!-- Login Link -->
+    <p class="mt-6 text-center text-sm text-gray-300">
       Already have an account?
-      <a href="login.html" class="text-yellow-600 font-semibold hover:underline">Login</a>
+      <a href="finallogin.html" class="font-semibold text-yellow-400 hover:text-yellow-300 transition duration-200">Login here</a>
     </p>
   </div>
-</body>
 
+  <script>
+    // ========================================
+    // JAVASCRIPT - SIGNUP FUNCTIONALITY
+    // ========================================
+
+    // ===== JS PROGRAMMING BASICS - Variables (Data Types) =====
+    const signupForm = document.getElementById('signupForm');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const studentIdInput = document.getElementById('studentId');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const signupBtn = document.getElementById('signupBtn');
+    const messageBox = document.getElementById('messageBox');
+
+    // Error elements
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const phoneError = document.getElementById('phoneError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const studentSuccess = document.getElementById('studentSuccess');
+
+    // API URL constant
+    const API_URL = 'http://localhost:3000';
+
+    // ===== JS VALIDATION METHODS - Functions =====
+
+    // Validate name (minimum 3 characters)
+    function validateName(name) {
+      return name.trim().length >= 3;
+    }
+
+    // Validate email format
+    function validateEmail(email) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(email);
+    }
+
+    // Validate phone (exactly 10 digits)
+    function validatePhone(phone) {
+      const phonePattern = /^\d{10}$/;
+      return phonePattern.test(phone.replace(/[\s-]/g, ''));
+    }
+
+    // Validate password (minimum 6 characters)
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    // Check if passwords match
+    function passwordsMatch(password, confirmPassword) {
+      return password === confirmPassword;
+    }
+
+    // ===== DOM MANIPULATION - Show/Hide Errors =====
+
+    function showError(errorElement, inputElement, message) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      inputElement.style.borderColor = '#ff4444';
+    }
+
+    function hideError(errorElement, inputElement) {
+      errorElement.style.display = 'none';
+      inputElement.style.borderColor = '#ca8a04';
+    }
+
+    function showMessage(message, type) {
+      messageBox.textContent = message;
+      messageBox.classList.remove('hidden');
+      
+      if (type === 'success') {
+        messageBox.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+        messageBox.style.border = '1px solid #22c55e';
+        messageBox.style.color = '#22c55e';
+      } else {
+        messageBox.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+        messageBox.style.border = '1px solid #ef4444';
+        messageBox.style.color = '#ef4444';
+      }
+    }
+
+    // ===== REAL-TIME VALIDATION (DOM Manipulation) =====
+
+    // Name validation
+    fullNameInput.addEventListener('blur', function() {
+      if (!validateName(fullNameInput.value)) {
+        showError(nameError, fullNameInput, 'Name must be at least 3 characters');
+      } else {
+        hideError(nameError, fullNameInput);
+      }
+    });
+
+    // Email validation
+    emailInput.addEventListener('blur', function() {
+      if (!validateEmail(emailInput.value)) {
+        showError(emailError, emailInput, 'Please enter a valid email');
+      } else {
+        hideError(emailError, emailInput);
+      }
+    });
+
+    // Phone validation
+    phoneInput.addEventListener('blur', function() {
+      if (!validatePhone(phoneInput.value)) {
+        showError(phoneError, phoneInput, 'Phone must be 10 digits');
+      } else {
+        hideError(phoneError, phoneInput);
+      }
+    });
+
+    // Password validation
+    passwordInput.addEventListener('blur', function() {
+      if (!validatePassword(passwordInput.value)) {
+        showError(passwordError, passwordInput, 'Password must be at least 6 characters');
+      } else {
+        hideError(passwordError, passwordInput);
+      }
+    });
+
+    // Confirm password validation
+    confirmPasswordInput.addEventListener('blur', function() {
+      if (!passwordsMatch(passwordInput.value, confirmPasswordInput.value)) {
+        showError(confirmPasswordError, confirmPasswordInput, 'Passwords do not match');
+      } else {
+        hideError(confirmPasswordError, confirmPasswordInput);
+      }
+    });
+
+    // Student ID - show success message
+    studentIdInput.addEventListener('input', function() {
+      if (studentIdInput.value.trim().length > 0) {
+        studentSuccess.style.display = 'block';
+      } else {
+        studentSuccess.style.display = 'none';
+      }
+    });
+
+    // ===== FORM SUBMISSION WITH FETCH API (REST API - POST) =====
+
+    signupForm.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form values (Variables)
+      const fullName = fullNameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const studentId = studentIdInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      // ===== CONTROL FLOW - Validation =====
+      let isValid = true;
+
+      if (!validateName(fullName)) {
+        showError(nameError, fullNameInput, 'Name must be at least 3 characters');
+        isValid = false;
+      }
+
+      if (!validateEmail(email)) {
+        showError(emailError, emailInput, 'Please enter a valid email');
+        isValid = false;
+      }
+
+      if (!validatePhone(phone)) {
+        showError(phoneError, phoneInput, 'Phone must be 10 digits');
+        isValid = false;
+      }
+
+      if (!validatePassword(password)) {
+        showError(passwordError, passwordInput, 'Password must be at least 6 characters');
+        isValid = false;
+      }
+
+      if (!passwordsMatch(password, confirmPassword)) {
+        showError(confirmPasswordError, confirmPasswordInput, 'Passwords do not match');
+        isValid = false;
+      }
+
+      // If validation fails, stop
+      if (!isValid) {
+        showMessage('Please fix all errors before submitting', 'error');
+        return;
+      }
+
+      // Disable button during signup
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating Account...';
+
+      // ===== JSON OBJECT - Create user data =====
+      const userData = {
+        name: fullName,
+        email: email,
+        phone: phone,
+        studentId: studentId,
+        isStudent: studentId.length > 0,
+        password: password,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        // ===== FETCH API - POST request to JSON Server =====
+        const response = await fetch(`${API_URL}/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        // Control Flow - check response
+        if (response.ok) {
+          const newUser = await response.json();
+          
+          // Store user in localStorage
+          localStorage.setItem('currentUser', JSON.stringify(newUser));
+          
+          // Show success message
+          showMessage('✅ Account created successfully! Redirecting...', 'success');
+          
+          // Redirect to login after 2 seconds
+          setTimeout(function() {
+            window.location.href = 'finallogin.html';
+          }, 2000);
+
+        } else {
+          showMessage('❌ Email already exists or server error', 'error');
+          signupBtn.disabled = false;
+          signupBtn.textContent = 'Create Account';
+        }
+
+      } catch (error) {
+        // Error handling
+        console.error('Signup error:', error);
+        showMessage('🔴 Connection error. Make sure JSON Server is running!', 'error');
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Create Account';
+      }
+    });
+
+    // Clear errors on input
+    fullNameInput.addEventListener('input', () => hideError(nameError, fullNameInput));
+    emailInput.addEventListener('input', () => hideError(emailError, emailInput));
+    phoneInput.addEventListener('input', () => hideError(phoneError, phoneInput));
+    passwordInput.addEventListener('input', () => hideError(passwordError, passwordInput));
+    confirmPasswordInput.addEventListener('input', () => hideError(confirmPasswordError, confirmPasswordInput));
+  </script>
+</body>
 </html>
