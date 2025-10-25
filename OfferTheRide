@@ -65,7 +65,7 @@
         </div>
         <div class="hidden md:flex items-center space-x-6">
           <a href="finalhomepage.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
-          <a href="bookaride.html" class="text-gray-300 hover:text-yellow-400 transition">Find Rides</a>
+          <a href="finalbookride.html" class="text-gray-300 hover:text-yellow-400 transition">Find Rides</a>
           <a href="finalofferaride.html" class="text-yellow-400 font-semibold">Offer Rides</a>
           <span id="userInfo" class="text-gray-300"></span>
           <button id="logoutBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
@@ -79,6 +79,11 @@
   <!-- Main Content -->
   <div class="relative z-10 max-w-6xl mx-auto px-6 py-8">
     
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="mb-4 p-4 rounded-xl text-center hidden">
+      <p class="font-semibold"></p>
+    </div>
+
     <!-- Offer Ride Form -->
     <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-8 mb-8 border border-yellow-600/30">
       <h1 class="text-3xl font-bold text-yellow-400 mb-2">Offer a Ride</h1>
@@ -94,7 +99,7 @@
               <option value="">Select vehicle</option>
               <option value="Car">🚗 Car (AC Comfort)</option>
               <option value="Auto">🛺 Auto Rickshaw (Budget-Friendly)</option>
-              <option value="Bike">🏍 Bike (Fastest)</option>
+              <option value="Bike">🏍️ Bike (Fastest)</option>
             </select>
             <span class="error-message" id="vehicleTypeError">Please select a vehicle type</span>
           </div>
@@ -186,17 +191,13 @@
     <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-8 border border-yellow-600/30">
       <h2 class="text-2xl font-bold text-yellow-400 mb-4">My Offered Rides</h2>
       <div id="myRidesContainer" class="space-y-4">
-        <!-- My rides will be loaded here -->
+        <p class="text-gray-400 text-center py-8">Loading your rides...</p>
       </div>
     </div>
   </div>
 
   <script>
-    // ========================================
-    // JAVASCRIPT - OFFER RIDE FUNCTIONALITY
-    // ========================================
-
-    // ===== JS PROGRAMMING BASICS - Variables =====
+    // API Configuration
     const API_URL = 'http://localhost:3000';
     let currentUser = null;
 
@@ -207,6 +208,7 @@
     const myRidesContainer = document.getElementById('myRidesContainer');
     const messageBox = document.getElementById('messageBox');
     const submitBtn = document.getElementById('submitBtn');
+    const connectionStatus = document.getElementById('connectionStatus');
 
     // Form inputs
     const vehicleTypeInput = document.getElementById('vehicleType');
@@ -229,7 +231,37 @@
     const seatsError = document.getElementById('seatsError');
     const priceError = document.getElementById('priceError');
 
-    // ===== CHECK LOGIN =====
+    // Check server connection
+    async function checkServerConnection() {
+      try {
+        const response = await fetch(`${API_URL}/rides`);
+        if (response.ok) {
+          showConnectionStatus('✅ Connected to server', 'success');
+          return true;
+        }
+      } catch (error) {
+        showConnectionStatus('❌ Server not connected. Please start JSON Server on port 3000', 'error');
+        return false;
+      }
+    }
+
+    function showConnectionStatus(message, type) {
+      connectionStatus.querySelector('p').textContent = message;
+      connectionStatus.classList.remove('hidden');
+      
+      if (type === 'success') {
+        connectionStatus.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+        connectionStatus.style.border = '1px solid #22c55e';
+        connectionStatus.style.color = '#22c55e';
+        setTimeout(() => connectionStatus.classList.add('hidden'), 3000);
+      } else {
+        connectionStatus.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+        connectionStatus.style.border = '1px solid #ef4444';
+        connectionStatus.style.color = '#ef4444';
+      }
+    }
+
+    // Check login
     function checkLogin() {
       const userString = localStorage.getItem('currentUser');
       
@@ -240,12 +272,12 @@
       }
       
       currentUser = JSON.parse(userString);
-      userInfo.textContent = 👤 ${currentUser.name};
-      driverPhoneInput.value = currentUser.phone; // Pre-fill phone
+      userInfo.textContent = `👤 ${currentUser.name}`;
+      driverPhoneInput.value = currentUser.phone;
       return true;
     }
 
-    // ===== LOGOUT =====
+    // Logout
     logoutBtn.addEventListener('click', function() {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('currentUser');
@@ -253,8 +285,7 @@
       }
     });
 
-    // ===== JS VALIDATION METHODS - Functions =====
-
+    // Validation functions
     function validatePhone(phone) {
       return phone.trim().length === 10 && /^\d+$/.test(phone);
     }
@@ -268,7 +299,7 @@
       return parseInt(price) >= 10;
     }
 
-    // ===== DOM MANIPULATION - Show/Hide Errors =====
+    // Error handling
     function showError(errorElement, message) {
       errorElement.textContent = message;
       errorElement.style.display = 'block';
@@ -295,11 +326,11 @@
       setTimeout(() => messageBox.classList.add('hidden'), 5000);
     }
 
-    // ===== SET MINIMUM DATE TO TODAY =====
+    // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     rideDateInput.min = today;
 
-    // ===== FORM SUBMISSION WITH FETCH API (POST) =====
+    // Form submission
     offerRideForm.addEventListener('submit', async function(event) {
       event.preventDefault();
 
@@ -314,7 +345,7 @@
       const price = priceInput.value;
       const notes = notesInput.value.trim();
 
-      // ===== CONTROL FLOW - Validation =====
+      // Validation
       let isValid = true;
 
       if (!vehicleType) {
@@ -371,7 +402,7 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Publishing...';
 
-      // ===== JSON OBJECT - Create ride data =====
+      // Create ride data - EXACT format that Book Ride expects
       const rideData = {
         driverId: currentUser.id,
         driverName: currentUser.name,
@@ -390,9 +421,10 @@
         status: 'active'
       };
 
+      console.log('Posting ride data:', rideData);
+
       try {
-        // ===== FETCH API - POST request =====
-        const response = await fetch(${API_URL}/rides, {
+        const response = await fetch(`${API_URL}/rides`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -400,35 +432,39 @@
           body: JSON.stringify(rideData)
         });
 
+        const responseData = await response.json();
+        console.log('Server response:', responseData);
+
         if (response.ok) {
           showMessage('✅ Ride published successfully! Passengers can now book your ride.', 'success');
           offerRideForm.reset();
-          driverPhoneInput.value = currentUser.phone; // Re-fill phone
+          driverPhoneInput.value = currentUser.phone;
           loadMyRides();
         } else {
           showMessage('❌ Error publishing ride. Please try again.', 'error');
         }
       } catch (error) {
         console.error('Error:', error);
-        showMessage('🔴 Connection error. Make sure JSON Server is running!', 'error');
+        showMessage('🔴 Connection error. Make sure JSON Server is running on port 3000!', 'error');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '🚗 Publish Ride Offer';
       }
     });
 
-    // ===== FETCH API - GET MY RIDES =====
+    // Load my rides
     async function loadMyRides() {
       try {
-        const response = await fetch(${API_URL}/rides?driverId=${currentUser.id});
+        const response = await fetch(`${API_URL}/rides?driverId=${currentUser.id}`);
         const myRides = await response.json();
+
+        console.log('My rides:', myRides);
 
         if (myRides.length === 0) {
           myRidesContainer.innerHTML = '<p class="text-gray-400 text-center py-8">You haven\'t offered any rides yet.</p>';
           return;
         }
 
-        // ===== ARRAY METHOD & DOM MANIPULATION =====
         myRidesContainer.innerHTML = myRides.map(ride => `
           <div class="bg-gray-900/60 border border-yellow-600/30 rounded-xl p-5">
             <div class="flex justify-between items-start">
@@ -440,43 +476,46 @@
                   <p class="text-gray-300">💰 ₹${ride.pricePerSeat} per seat</p>
                   <p class="text-gray-300">📞 ${ride.driverPhone}</p>
                 </div>
-                ${ride.notes ? <p class="text-gray-400 text-sm mt-2">📝 ${ride.notes}</p> : ''}
+                ${ride.notes ? `<p class="text-gray-400 text-sm mt-2">📝 ${ride.notes}</p>` : ''}
               </div>
               <button onclick="deleteRide(${ride.id})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm ml-4 transition">
-                🗑 Delete
+                🗑️ Delete
               </button>
             </div>
           </div>
         `).join('');
       } catch (error) {
         console.error('Error loading rides:', error);
-        myRidesContainer.innerHTML = '<p class="text-red-400 text-center py-8">Error loading your rides</p>';
+        myRidesContainer.innerHTML = '<p class="text-red-400 text-center py-8">❌ Error loading your rides. Check server connection.</p>';
       }
     }
 
-    // ===== FETCH API - DELETE RIDE =====
+    // Delete ride
     async function deleteRide(rideId) {
       if (!confirm('Are you sure you want to delete this ride?')) {
         return;
       }
 
       try {
-        await fetch(${API_URL}/rides/${rideId}, {
+        const response = await fetch(`${API_URL}/rides/${rideId}`, {
           method: 'DELETE'
         });
-        
-        showMessage('✅ Ride deleted successfully', 'success');
-        loadMyRides();
+
+        if (response.ok) {
+          showMessage('✅ Ride deleted successfully', 'success');
+          loadMyRides();
+        } else {
+          showMessage('❌ Error deleting ride', 'error');
+        }
       } catch (error) {
         console.error('Delete error:', error);
         showMessage('❌ Error deleting ride', 'error');
       }
     }
 
-    // Make deleteRide global
     window.deleteRide = deleteRide;
 
-    // ===== CLEAR ERRORS ON INPUT =====
+    // Clear errors on input
     vehicleTypeInput.addEventListener('change', () => hideError(vehicleTypeError));
     driverPhoneInput.addEventListener('input', () => hideError(phoneError));
     fromLocationInput.addEventListener('change', () => hideError(fromError));
@@ -486,8 +525,9 @@
     seatsInput.addEventListener('input', () => hideError(seatsError));
     priceInput.addEventListener('input', () => hideError(priceError));
 
-    // ===== INITIALIZE =====
+    // Initialize
     if (checkLogin()) {
+      checkServerConnection();
       loadMyRides();
     }
   </script>
