@@ -3,234 +3,361 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offer a Ride - RidePulse</title>
+  <title>Book a Ride - RideFusion</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .map-pin { animation: bounce 2s infinite; }
-    @keyframes bounce {
-      0%,20%,50%,80%,100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-      60% { transform: translateY(-5px); }
+    body {
+      font-family: 'Poppins', sans-serif;
     }
-    .floating { animation: float 6s ease-in-out infinite; }
-    @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-20px);} }
-
-    .glass { background: rgba(255,215,0,0.1); backdrop-filter: blur(10px); border:1px solid rgba(255,215,0,0.2);}
-    .glass-dark { background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); border:1px solid rgba(255,215,0,0.3);}
-    .glass-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); border:1px solid rgba(255,215,0,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.3);}
-    .golden-glow { box-shadow:0 0 30px rgba(255,215,0,0.3);}
-    .golden-glow-strong { box-shadow:0 0 50px rgba(255,215,0,0.5);}
-    .text-golden { color:#FFD700;}
-    .text-golden-light { color:#FFF8DC;}
-    .bg-golden-gradient { background: linear-gradient(135deg,#FFD700,#FFA500,#FF8C00);}
-    .bg-golden-dark-gradient { background: linear-gradient(135deg,#B8860B,#DAA520,#FFD700);}
-    .shimmer { position:relative; overflow:hidden; }
-    .shimmer::before {
-      content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
-      background: linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent);
-      animation: shimmer 3s infinite;
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: linear-gradient(45deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+      opacity: 1;
+      box-shadow: 0 0 12px #fbbf24;
     }
-    @keyframes shimmer { 0%{left:-100%;} 100%{left:100%;}}
-    .particle { position:absolute; width:4px; height:4px; background:#FFD700; border-radius:50%; animation: particle-float 8s infinite; }
-    @keyframes particle-float {
-      0%,100% { transform: translateY(100vh) translateX(0); opacity:0;}
-      10%,90% { opacity:1;}
-      50% { transform: translateY(-10px) translateX(50px);}
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
     }
-    .golden-border { border-image:linear-gradient(45deg,#FFD700,#FFA500,#FFD700) 1; }
-    @keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
-    .animate-marquee { animation: marquee 10s linear infinite; }
+    .ride-card {
+      transition: all 0.3s ease;
+    }
+    .ride-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+    }
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
   </style>
 </head>
-<body class="bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-x-hidden">
+<body class="bg-black text-white min-h-screen relative">
 
   <!-- Floating Particles -->
   <div class="fixed inset-0 pointer-events-none z-0">
     <div class="particle" style="left:10%;animation-delay:0s;"></div>
-    <div class="particle" style="left:20%;animation-delay:1s;"></div>
     <div class="particle" style="left:30%;animation-delay:2s;"></div>
-    <div class="particle" style="left:40%;animation-delay:3s;"></div>
     <div class="particle" style="left:50%;animation-delay:4s;"></div>
-    <div class="particle" style="left:60%;animation-delay:5s;"></div>
     <div class="particle" style="left:70%;animation-delay:6s;"></div>
-    <div class="particle" style="left:80%;animation-delay:7s;"></div>
     <div class="particle" style="left:90%;animation-delay:8s;"></div>
-    <img src="https://images.pexels.com/photos/4126136/pexels-photo-4126136.jpeg" alt="City night traffic" />
   </div>
 
-  <!-- Navbar -->
-  <header class="glass-dark shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-golden-gradient rounded-full flex items-center justify-center golden-glow">
-          <span class="text-xl font-bold text-black">R</span>
-        </div>
-        <h1 class="text-2xl font-bold text-golden">RidePulse</h1>
-      </div>
-      <nav class="space-x-6 flex items-center">
-        <a href="#" class="hover:text-golden transition">Home</a>
-        <a href="#" class="hover:text-golden transition">Book a Ride</a>
-        <a href="#" class="text-golden font-semibold">Offer a Ride</a>
-        <a href="#" class="hover:text-golden transition">About</a>
-        <a href="#" class="hover:text-golden transition">Contact</a>
-        <button class="ml-4 px-6 py-2 bg-golden-gradient rounded-lg hover:opacity-90 transition font-semibold shadow-lg text-black golden-glow">
-          Profile
-        </button>
-      </nav>
-    </div>
-  </header>
+  <!-- Background Image -->
+  <div class="fixed inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" class="w-full h-full object-cover opacity-40">
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/80"></div>
+  </div>
 
-  <!-- Hero -->
-  <section class="relative py-20 px-6 text-center">
-    <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 shimmer">
-      Offer Your <span class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">Ride</span>
-    </h2>
-    <p class="text-xl text-yellow-400 max-w-3xl mx-auto whitespace-nowrap inline-block ">
-      Share your journey, earn money, and help build a sustainable transportation network
-    </p>
-  </section>
+  <!-- Navigation Bar -->
+  <nav class="bg-black/80 backdrop-blur-sm border-b border-yellow-600/30 sticky top-0 z-50 relative">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center shadow-lg">
+            <span class="text-black font-bold text-xl">R</span>
+          </div>
+          <div>
+            <span class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">RideFusion</span>
+            <div class="text-xs text-yellow-400">Rajpura Local Transport</div>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="finalhomepage.html" class="text-gray-300 hover:text-yellow-400 transition">Home</a>
+          <a href="finalbookride.html" class="text-yellow-400 font-semibold">Find Rides</a>
+          <a href="finalofferaride.html" class="text-gray-300 hover:text-yellow-400 transition">Offer Rides</a>
+          <span id="userInfo" class="text-gray-300"></span>
+          <button id="logoutBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
 
   <!-- Main Content -->
-  <section class="max-w-7xl mx-auto px-6 pb-20 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      
-      <!-- LEFT: Form -->
-      <div class="space-y-8">
-        <!-- Route Planning -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6 flex items-center">🗺️ Plan Your Route</h3>
-          <div class="space-y-4">
-            <div class="flex items-center space-x-4 glass rounded-lg p-4">
-              <div class="w-4 h-4 bg-green-500 rounded-full golden-glow"></div>
-              <input type="text" placeholder="From: Enter pickup location" class="bg-transparent text-white flex-1 outline-none text-lg placeholder-gray-400">
-              <button class="text-golden hover:text-yellow-300">📍</button>
-            </div>
-            <div class="flex justify-center">
-              <div class="w-px h-8 bg-gradient-to-b from-green-500 via-yellow-500 to-red-500"></div>
-            </div>
-            <div class="flex items-center space-x-4 glass rounded-lg p-4">
-              <div class="w-4 h-4 bg-red-500 rounded-full golden-glow"></div>
-              <input type="text" placeholder="To: Enter destination" class="bg-transparent text-white flex-1 outline-none text-lg placeholder-gray-400">
-              <button class="text-golden hover:text-yellow-300">📍</button>
-            </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-8">
+    
+    <!-- Welcome Message -->
+    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-yellow-600/30">
+      <h1 class="text-3xl font-bold text-yellow-400 mb-2">Find Your Perfect Ride 🚗</h1>
+      <p class="text-gray-300" id="welcomeMessage">Loading user info...</p>
+    </div>
+
+    <!-- Search Filters -->
+    <div class="bg-black/60 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-yellow-600/30">
+      <h3 class="text-xl font-bold text-yellow-400 mb-4">🔍 Search & Filter Rides</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <select id="filterVehicle" class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+          <option value="">All Vehicles</option>
+          <option value="Car">🚗 Car</option>
+          <option value="Auto">🛺 Auto Rickshaw</option>
+          <option value="Bike">🏍️ Bike</option>
+        </select>
+        
+        <input type="date" id="filterDate" class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        
+        <input type="text" id="searchLocation" placeholder="🔍 Search location..." class="bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        
+        <button id="searchBtn" class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold rounded-lg px-6 py-3 hover:shadow-lg transition transform hover:scale-105">
+          Search Rides
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-gradient-to-r from-green-600/20 to-green-500/20 backdrop-blur-xl rounded-xl p-4 border border-green-500/30">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-green-400 text-sm font-semibold">Available Rides</p>
+            <p class="text-2xl font-bold text-white" id="totalRides">0</p>
           </div>
-        </div>
-
-        <!-- Trip Details -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6">⚙️ Trip Details</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-golden-light mb-2 font-semibold">📅 Departure Date</label>
-              <input type="date" class="w-full glass rounded-lg p-3 text-white outline-none">
-            </div>
-            <div>
-              <label class="block text-golden-light mb-2 font-semibold">🕐 Departure Time</label>
-              <input type="time" class="w-full glass rounded-lg p-3 text-white outline-none">
-            </div>
-            <div>
-              <label class="block text-golden-light mb-2 font-semibold">🪑 Available Seats</label>
-              <select class="w-full glass rounded-lg p-3 text-white outline-none">
-                <option>1 Seat</option><option>2 Seats</option><option>3 Seats</option><option>4+ Seats</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-golden-light mb-2 font-semibold">💰 Price per Seat</label>
-              <input type="number" placeholder="₹299" class="w-full glass rounded-lg p-3 text-white outline-none">
-            </div>
-          </div>
-        </div>
-
-        <!-- Vehicle Selection -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6">🚗 Choose Vehicle Type</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button class="bg-golden-gradient rounded-xl p-4 text-center text-black golden-glow-strong">🚗 Car<br><span class="text-xs">4-6 seats</span></button>
-            <button class="glass rounded-xl p-4 text-center">🏍️ Bike<br><span class="text-xs">1 seat</span></button>
-            <button class="glass rounded-xl p-4 text-center">🛺 Auto<br><span class="text-xs">2-3 seats</span></button>
-            <button class="glass rounded-xl p-4 text-center">🚕 Premium<br><span class="text-xs">4 seats</span></button>
-          </div>
-        </div>
-
-        <!-- Safety Preferences -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6">🛡️ Safety Preferences</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 👩 Women-only ride</label>
-            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox" checked> ✅ Verified riders only</label>
-            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 🚫 No smoking</label>
-            <label class="flex items-center space-x-4 p-4 glass rounded-lg"><input type="checkbox"> 🎵 Music allowed</label>
-          </div>
-        </div>
-
-        <!-- Additional Notes -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6">📝 Additional Information</h3>
-          <textarea placeholder="Add any special instructions..." class="w-full glass rounded-lg p-4 text-white h-32 resize-none"></textarea>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4">
-          <button class="flex-1 bg-golden-gradient text-black py-4 rounded-xl font-semibold text-lg golden-glow-strong">🚀 Post Your Ride</button>
-          <button class="flex-1 border-2 border-yellow-500 text-golden py-4 rounded-xl font-semibold text-lg glass">📅 Schedule Later</button>
+          <div class="text-3xl">🚗</div>
         </div>
       </div>
-
-      <!-- RIGHT: Info -->
-      <div class="space-y-8">
-        <!-- Route Preview Map -->
-        <div class="glass-card rounded-2xl overflow-hidden golden-glow">
-          <div class="bg-golden-gradient px-6 py-4"><h3 class="text-xl font-bold text-black">🗺️ Route Preview</h3></div>
-          <div class="relative h-80 bg-black/40">
-            <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image:url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80');"></div>
-            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 320">
-              <path d="M80 260 Q200 160 320 80" stroke="#FFD700" stroke-width="4" fill="none" stroke-dasharray="8,4"/>
-            </svg>
-            <div class="absolute bottom-16 left-16 map-pin"><div class="bg-green-500 w-6 h-6 rounded-full border-3 border-white"></div></div>
-            <div class="absolute top-16 right-16 map-pin"><div class="bg-red-500 w-6 h-6 rounded-full border-3 border-white"></div></div>
+      
+      <div class="bg-gradient-to-r from-blue-600/20 to-blue-500/20 backdrop-blur-xl rounded-xl p-4 border border-blue-500/30">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-blue-400 text-sm font-semibold">Total Seats</p>
+            <p class="text-2xl font-bold text-white" id="totalSeats">0</p>
           </div>
+          <div class="text-3xl">💺</div>
         </div>
-
-        <!-- Live Activity -->
-        <div class="glass-card rounded-2xl p-6 golden-glow">
-          <h3 class="text-xl font-bold text-golden mb-4">📊 Live Activity</h3>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div class="glass p-4"><div class="text-2xl font-bold text-golden">12</div><div class="text-gray-400 text-sm">Drivers</div></div>
-            <div class="glass p-4"><div class="text-2xl font-bold text-golden">28</div><div class="text-gray-400 text-sm">Looking</div></div>
-            <div class="glass p-4"><div class="text-2xl font-bold text-golden">₹450</div><div class="text-gray-400 text-sm">Avg. Earning</div></div>
+      </div>
+      
+      <div class="bg-gradient-to-r from-yellow-600/20 to-yellow-500/20 backdrop-blur-xl rounded-xl p-4 border border-yellow-500/30">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-yellow-400 text-sm font-semibold">Your Discount</p>
+            <p class="text-2xl font-bold text-white" id="userDiscount">0%</p>
           </div>
-        </div>
-
-        <!-- Vehicle Options -->
-        <div class="glass-card rounded-2xl p-8 golden-glow">
-          <h3 class="text-2xl font-bold text-golden mb-6">🚙 Your Vehicle Options</h3>
-          <div class="space-y-4">
-            <div class="glass p-4 border-2 border-yellow-500">Standard Car • ₹8-12/km</div>
-            <div class="glass p-4 border">Bike Ride • ₹3-5/km</div>
-            <div class="glass p-4 border">Premium Cab • ₹15-20/km</div>
-          </div>
-        </div>
-
-        <!-- Earnings Calculator -->
-        <div class="glass-card rounded-2xl p-8 golden-glow-strong">
-          <h3 class="text-2xl font-bold text-golden mb-6">💰 Earnings Calculator</h3>
-          <div class="glass-dark p-4">
-            <div class="flex justify-between"><span>Distance:</span><span>245 km</span></div>
-            <div class="flex justify-between"><span>Seats:</span><span>3</span></div>
-            <div class="flex justify-between"><span>Price/Seat:</span><span>₹299</span></div>
-            <hr class="border-gray-600 my-2">
-            <div class="flex justify-between font-bold text-green-400">Total: ₹897</div>
-          </div>
-        </div>
-
-        <!-- Your Stats -->
-        <div class="glass-card rounded-2xl p-6 golden-glow">
-          <h3 class="text-xl font-bold text-golden mb-4">📈 Your Stats</h3>
-          <p class="text-gray-400">Total rides offered: 24<br>Earnings this month: ₹12,450</p>
+          <div class="text-3xl">🎓</div>
         </div>
       </div>
     </div>
-  </section>
 
-</body>
-</html>
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="hidden text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-yellow-500 border-t-transparent"></div>
+      <p class="text-gray-400 mt-4">Loading available rides...</p>
+    </div>
+
+    <!-- Available Rides -->
+    <h2 class="text-2xl font-bold text-yellow-400 mb-4">🎯 Available Rides</h2>
+    <div id="ridesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      <!-- Rides will be loaded here by JavaScript -->
+    </div>
+
+    <!-- No Rides Message -->
+    <div id="noRidesMessage" class="hidden text-center py-12 bg-black/60 backdrop-blur-xl rounded-2xl border border-yellow-600/30">
+      <div class="text-6xl mb-4">😔</div>
+      <p class="text-2xl text-gray-400 mb-4">No rides available</p>
+      <p class="text-gray-500 mb-6">Try adjusting your search filters or check back later</p>
+      <a href="finalofferaride.html">
+        <button class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold rounded-lg hover:shadow-lg transition">
+          🎯 Become a Driver
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ========================================
+    // JAVASCRIPT - BOOK RIDE FUNCTIONALITY
+    // ========================================
+
+    // ===== JS PROGRAMMING BASICS - Variables =====
+    const API_URL = 'http://localhost:3000';
+    let currentUser = null;
+    let allRides = []; // Array to store all rides
+
+    // DOM elements
+    const ridesContainer = document.getElementById('ridesContainer');
+    const welcomeMsg = document.getElementById('welcomeMessage');
+    const userInfo = document.getElementById('userInfo');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const filterVehicle = document.getElementById('filterVehicle');
+    const filterDate = document.getElementById('filterDate');
+    const searchLocation = document.getElementById('searchLocation');
+    const searchBtn = document.getElementById('searchBtn');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const noRidesMessage = document.getElementById('noRidesMessage');
+    const totalRidesEl = document.getElementById('totalRides');
+    const totalSeatsEl = document.getElementById('totalSeats');
+    const userDiscountEl = document.getElementById('userDiscount');
+
+    // ===== CHECK IF USER IS LOGGED IN =====
+    function checkLogin() {
+      const userString = localStorage.getItem('currentUser');
+      
+      // Control Flow
+      if (!userString) {
+        alert('⚠️ Please login first to book rides!');
+        window.location.href = 'finallogin.html';
+        return false;
+      }
+      
+      currentUser = JSON.parse(userString);
+      return true;
+    }
+
+    // ===== DOM MANIPULATION - Display Welcome Message =====
+    function displayWelcomeMessage() {
+      if (currentUser.isStudent && currentUser.studentId) {
+        welcomeMsg.innerHTML = Welcome back, <strong>${currentUser.name}</strong>! 🎓 <span class="text-green-400 font-semibold">Your 15% student discount is active!</span>;
+        userDiscountEl.textContent = '15%';
+      } else {
+        welcomeMsg.innerHTML = Welcome back, <strong>${currentUser.name}</strong>! Ready to find your perfect ride?;
+        userDiscountEl.textContent = '0%';
+      }
+      
+      userInfo.textContent = 👤 ${currentUser.name};
+    }
+
+    // ===== LOGOUT FUNCTION =====
+    logoutBtn.addEventListener('click', function() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'finallogin.html';
+      }
+    });
+
+    // ===== CALCULATE STUDENT DISCOUNT (Function) =====
+    function calculatePrice(basePrice) {
+      // Control Flow - check if student
+      if (currentUser.isStudent && currentUser.studentId) {
+        const discount = basePrice * 0.15;
+        const finalPrice = basePrice - discount;
+        return {
+          original: basePrice,
+          final: Math.round(finalPrice),
+          discount: Math.round(discount),
+          isDiscounted: true
+        };
+      }
+      return {
+        original: basePrice,
+        final: basePrice,
+        discount: 0,
+        isDiscounted: false
+      };
+    }
+
+    // ===== FETCH API - GET RIDES FROM JSON SERVER =====
+    async function loadRides() {
+      loadingIndicator.classList.remove('hidden');
+      ridesContainer.innerHTML = '';
+      noRidesMessage.classList.add('hidden');
+
+      try {
+        const response = await fetch(${API_URL}/rides);
+        
+        // Control Flow - check response
+        if (!response.ok) {
+          throw new Error('Failed to fetch rides');
+        }
+
+        allRides = await response.json(); // Store in array
+        
+        // Filter only active rides with available seats
+        const availableRides = allRides.filter(ride => 
+          ride.status === 'active' && ride.bookedSeats < ride.seats
+        );
+        
+        displayRides(availableRides);
+        updateStats(availableRides);
+
+      } catch (error) {
+        console.error('Error loading rides:', error);
+        ridesContainer.innerHTML = `
+          <div class="col-span-3 text-center p-8 bg-red-900/20 rounded-xl border border-red-500">
+            <p class="text-red-400 text-xl mb-2">❌ Error loading rides</p>
+            <p class="text-gray-400 mb-4">Make sure JSON Server is running on port 3000</p>
+            <button onclick="location.reload()" class="px-6 py-2 bg-yellow-600 text-black rounded-lg hover:bg-yellow-500 transition">
+              🔄 Retry
+            </button>
+          </div>
+        `;
+      } finally {
+        loadingIndicator.classList.add('hidden');
+      }
+    }
+
+    // ===== UPDATE STATISTICS =====
+    function updateStats(rides) {
+      totalRidesEl.textContent = rides.length;
+      
+      // Calculate total available seats
+      const totalSeats = rides.reduce((sum, ride) => {
+        return sum + (ride.seats - ride.bookedSeats);
+      }, 0);
+      
+      totalSeatsEl.textContent = totalSeats;
+    }
+
+    // ===== DOM MANIPULATION - Display Rides =====
+    function displayRides(rides) {
+      if (rides.length === 0) {
+        noRidesMessage.classList.remove('hidden');
+        updateStats(rides);
+        return;
+      }
+
+      noRidesMessage.classList.add('hidden');
+
+      // Array method - map to create HTML
+      ridesContainer.innerHTML = rides.map(ride => {
+        const availableSeats = ride.seats - ride.bookedSeats;
+        const priceInfo = calculatePrice(ride.pricePerSeat);
+        
+        // Get vehicle emoji
+        const vehicleEmoji = ride.vehicleType === 'Car' ? '🚗' : 
+                            ride.vehicleType === 'Auto' ? '🛺' : '🏍️';
+        
+        return `
+          <div class="ride-card bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 border border-yellow-600/40 hover:border-yellow-500">
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-2xl">
+                  ${vehicleEmoji}
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-yellow-400">${ride.driverName}</h3>
+                  <p class="text-gray-400 text-sm">${ride.vehicleType}</p>
+                </div>
+              </div>
+              <span class="bg-green-500 text-black px-3 py-1 rounded-full text-sm font-bold pulse">
+                ${availableSeats} seat${availableSeats > 1 ? 's' : ''}
+              </span>
+            </div>
+            
+            <!-- Route Info -->
+            <div class="space-y-3 mb-4 bg-black/30 rounded-lg p-4">
+              <div class="flex items-start text-gray-300">
+                <span class="mr-2 text-green-400">📍</span>
+                <div class="flex-1">
+                  <p class="text-xs text-gray-500">FROM</p>
+                  <p class="font-semibold">${ride.from}</p>
+                </div>
+              </div>
+              <div class="border-l-2 border-yellow-500 ml-1 h-4"></div>
+              <div class="flex items-start text-gray-300">
+                <span class="mr-2 text-red-400">📍</span>
+                <div class="flex-1">
+                  <p class="text-xs text-gray-500">TO</p>
+                  <p class="font-semibold">${ride.to}</p>
+                </div>
+              </div>
+            </div>
