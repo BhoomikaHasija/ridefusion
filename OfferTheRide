@@ -334,7 +334,7 @@
     offerRideForm.addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      // Get form values
+      // Get form values to add details
       const vehicleType = vehicleTypeInput.value;
       const driverPhone = driverPhoneInput.value.trim();
       const fromLocation = fromLocationInput.value;
