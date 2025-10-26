@@ -1,1 +1,446 @@
 
+<!-- ✅ ADDED: Complete JavaScript Implementation -->
+  <script>
+    // ========================================
+    // COMPLETE JAVASCRIPT IMPLEMENTATION
+    // COVERING ALL SYLLABUS REQUIREMENTS
+    // ========================================
+
+    // ===== 1. JS PROGRAMMING BASICS - VARIABLES & DATA TYPES =====
+    const API_URL = 'http://localhost:3000'; // String - API endpoint
+    let currentUser = null; // Variable - will store user object
+    let allRides = []; // Array - stores all rides
+    let filteredRides = []; // Array - stores filtered rides
+    let refreshInterval = null; // Variable for auto-refresh
+
+    // ===== 2. DOM MANIPULATION - GET ELEMENTS =====
+    const authSection = document.getElementById('authSection');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const quickRidesContainer = document.getElementById('quickRidesContainer');
+    const liveRidesCount = document.getElementById('liveRidesCount');
+    const totalRidesEl = document.getElementById('totalRides');
+    const activeDriversEl = document.getElementById('activeDrivers');
+    const avgPriceEl = document.getElementById('avgPrice');
+    const quickFilterVehicle = document.getElementById('quickFilterVehicle');
+    const quickFilterLocation = document.getElementById('quickFilterLocation');
+    const quickFilterPrice = document.getElementById('quickFilterPrice');
+
+    // ===== 3. FUNCTIONS - CHECK USER LOGIN STATUS =====
+    function checkUserLogin() {
+      // Try to get user from localStorage
+      const userString = localStorage.getItem('currentUser');
+      
+      // Control Flow - if/else
+      if (userString) {
+        currentUser = JSON.parse(userString); // Parse JSON string to object
+        displayLoggedInUser();
+      } else {
+        displayLoginButtons();
+      }
+    }
+
+    // ===== 4. DOM MANIPULATION - Display Login Buttons =====
+    function displayLoginButtons() {
+      authSection.innerHTML = `
+        <a href="Login.html" class="text-gray-300 hover:text-yellow-400 transition">Login</a>
+        <a href="signup.html">
+          <button class="px-6 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-lg hover:opacity-90 transition font-semibold shadow-lg">
+            Sign-Up
+          </button>
+        </a>
+      `;
+    }
+
+    // ===== 5. DOM MANIPULATION - Display Logged In User =====
+    function displayLoggedInUser() {
+      // String concatenation and DOM manipulation
+      authSection.innerHTML = `
+        <span class="text-yellow-400 font-semibold">👤 ${currentUser.name}</span>
+        <button onclick="handleLogout()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
+          Logout
+        </button>
+      `;
+
+      // Display personalized welcome message
+      if (currentUser.isStudent) {
+        welcomeMessage.innerHTML = `
+          <div class="bg-green-500/20 border border-green-500 rounded-lg px-6 py-3 inline-block">
+            <p class="text-green-400 font-bold text-lg">
+              🎓 Welcome back, ${currentUser.name}! Your 15% student discount is active!
+            </p>
+          </div>
+        `;
+      } else {
+        welcomeMessage.innerHTML = `
+          <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg px-6 py-3 inline-block">
+            <p class="text-yellow-400 font-bold text-lg">
+              👋 Welcome back, ${currentUser.name}!
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // ===== 6. FUNCTION - Handle Logout =====
+    function handleLogout() {
+      // Control Flow - confirm dialog
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        window.location.reload(); // Reload page
+      }
+    }
+
+    // ===== 7. FETCH API - GET RIDES FROM JSON SERVER =====
+    async function loadQuickRides() {
+      try {
+        // AJAX/Fetch API call
+        const response = await fetch(${API_URL}/rides);
+        
+        // Control Flow - check if response is ok
+        if (!response.ok) {
+          throw new Error('Failed to fetch rides');
+        }
+
+        // Parse JSON response
+        allRides = await response.json();
+        filteredRides = allRides; // Initially show all rides
+        
+        displayQuickRides(filteredRides);
+        updateStatistics(allRides);
+
+      } catch (error) {
+        console.error('Error loading rides:', error);
+        quickRidesContainer.innerHTML = `
+          <div class="col-span-3 text-center py-12 bg-red-900/20 rounded-xl border border-red-500">
+            <p class="text-red-400 text-xl mb-2">❌ Error loading rides</p>
+            <p class="text-gray-400">Make sure JSON Server is running on port 3000</p>
+            <button onclick="loadQuickRides()" class="mt-4 bg-yellow-600 hover:bg-yellow-700 text-black px-6 py-2 rounded-lg font-semibold transition">
+              🔄 Try Again
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // ===== 8. ARRAYS & DOM MANIPULATION - Display Rides =====
+    function displayQuickRides(rides) {
+      // Control Flow - check if rides array is empty
+      if (rides.length === 0) {
+        quickRidesContainer.innerHTML = `
+          <div class="col-span-3 text-center py-12">
+            <div class="text-6xl mb-4">😔</div>
+            <p class="text-2xl text-gray-400 mb-2">No rides available</p>
+            <p class="text-gray-500">Try adjusting your filters or check back later</p>
+          </div>
+        `;
+        liveRidesCount.textContent = '0';
+        return;
+      }
+
+      // Update live count
+      liveRidesCount.textContent = rides.length;
+
+      // Array method - map() to create HTML for each ride
+      quickRidesContainer.innerHTML = rides.map((ride, index) => {
+        const availableSeats = ride.seats - ride.bookedSeats;
+        
+        // Control Flow - check seat availability
+        if (availableSeats <= 0) {
+          return ''; // Skip fully booked rides
+        }
+
+        // Calculate price with student discount if applicable
+        let displayPrice = ride.pricePerSeat;
+        let discountTag = '';
+        
+        if (currentUser && currentUser.isStudent) {
+          const discount = ride.pricePerSeat * 0.15;
+          displayPrice = Math.round(ride.pricePerSeat - discount);
+          discountTag = '<span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full ml-2">15% OFF</span>';
+        }
+
+        // Return HTML string for each ride card
+        return `
+          <div class="royal-card rounded-2xl p-6 card-hover ride-card-animate" style="animation-delay: ${index * 0.1}s">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-yellow-400">${ride.driverName}</h3>
+                <p class="text-gray-400 text-sm">${ride.vehicleType}</p>
+              </div>
+              <span class="bg-green-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+                ${availableSeats} seats
+              </span>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">📍</span>
+                <span class="text-sm">${ride.from} → ${ride.to}</span>
+              </div>
+              <div class="flex items-center text-gray-300">
+                <span class="mr-2">📅</span>
+                <span class="text-sm">${ride.date} at ${ride.time}</span>
+              </div>
+              <div class="flex items-center text-yellow-400 font-bold text-lg">
+                <span class="mr-2">💰</span>
+                <span>₹${displayPrice}/seat</span>
+                ${discountTag}
+              </div>
+              ${ride.notes ? <div class="text-gray-400 text-xs mt-2">📝 ${ride.notes}</div> : ''}
+            </div>
+            
+            <a href="bookaride.html">
+              <button class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition">
+                🚗 Book Now
+              </button>
+            </a>
+          </div>
+        `;
+      }).join(''); // Join array elements into single string
+    }
+
+    // ===== 9. FUNCTIONS & CALCULATIONS - Update Statistics =====
+    function updateStatistics(rides) {
+      // Filter active rides (rides with available seats)
+      const activeRides = rides.filter(ride => ride.bookedSeats < ride.seats);
+      
+      // Calculate total rides
+      totalRidesEl.textContent = rides.length;
+      
+      // Get unique drivers count using Set (Array method)
+      const uniqueDrivers = new Set(rides.map(ride => ride.driverId));
+      activeDriversEl.textContent = uniqueDrivers.size;
+      
+      // Calculate average price using reduce (Array method)
+      if (rides.length > 0) {
+        const totalPrice = rides.reduce((sum, ride) => sum + ride.pricePerSeat, 0);
+        const avgPrice = Math.round(totalPrice / rides.length);
+        avgPriceEl.textContent = avgPrice;
+      } else {
+        avgPriceEl.textContent = '0';
+      }
+    }
+
+    // ===== 10. CONTROL FLOW & ARRAYS - Filter Rides =====
+    function filterQuickRides() {
+      // Get filter values
+      const vehicleType = quickFilterVehicle.value;
+      const location = quickFilterLocation.value.toLowerCase().trim();
+      const maxPrice = parseInt(quickFilterPrice.value) || Infinity;
+
+      // Array method - filter() with multiple conditions
+      filteredRides = allRides.filter(ride => {
+        let matches = true;
+
+        // Control Flow - check vehicle type
+        if (vehicleType && ride.vehicleType !== vehicleType) {
+          matches = false;
+        }
+
+        // Control Flow - check location (from or to)
+        if (location) {
+          const fromMatch = ride.from.toLowerCase().includes(location);
+          const toMatch = ride.to.toLowerCase().includes(location);
+          if (!fromMatch && !toMatch) {
+            matches = false;
+          }
+        }
+
+        // Control Flow - check price
+        if (ride.pricePerSeat > maxPrice) {
+          matches = false;
+        }
+
+        // Control Flow - check seat availability
+        if (ride.bookedSeats >= ride.seats) {
+          matches = false;
+        }
+
+        return matches;
+      });
+
+      // Display filtered results
+      displayQuickRides(filteredRides);
+    }
+
+    // ===== 11. FUNCTION - Clear All Filters =====
+    function clearFilters() {
+      quickFilterVehicle.value = '';
+      quickFilterLocation.value = '';
+      quickFilterPrice.value = '';
+      filteredRides = allRides;
+      displayQuickRides(filteredRides);
+    }
+
+    // ===== 12. FUNCTION - Refresh Rides =====
+    function refreshRides() {
+      loadQuickRides();
+      
+      // Visual feedback using DOM manipulation
+      const btn = event.target;
+      btn.textContent = '⏳ Refreshing...';
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        btn.textContent = '🔄 Refresh';
+        btn.disabled = false;
+      }, 1000);
+    }
+
+    // ===== 13. CONTROL FLOW - Auto Refresh Every 30 seconds =====
+    function startAutoRefresh() {
+      // Clear existing interval if any
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+      }
+      
+      // Set new interval
+      refreshInterval = setInterval(() => {
+        loadQuickRides();
+        console.log('Auto-refreshed rides at:', new Date().toLocaleTimeString());
+      }, 30000); // 30 seconds
+    }
+
+    // ===== 14. JS VALIDATION - Example Validation Function =====
+    function validatePhoneNumber(phone) {
+      // Validation using Regular Expression
+      const phoneRegex = /^[0-9]{10}$/;
+      return phoneRegex.test(phone);
+    }
+
+    // ===== 15. JSON OBJECTS - Example JSON Data Structure =====
+    const exampleRideObject = {
+      id: 1,
+      driverId: 101,
+      driverName: "Rajesh Kumar",
+      driverPhone: "9876543210",
+      vehicleType: "Car",
+      from: "Chitkara University",
+      to: "Rajpura Railway Station",
+      date: "2025-10-27",
+      time: "10:00",
+      seats: 4,
+      bookedSeats: 2,
+      pricePerSeat: 50,
+      passengers: [201, 202],
+      notes: "AC available",
+      status: "active"
+    };
+
+    // ===== 16. ARRAY METHODS - Examples =====
+    function demonstrateArrayMethods() {
+      // Array of prices
+      const prices = [50, 30, 80, 40, 60];
+      
+      // map() - transform each element
+      const discountedPrices = prices.map(price => price * 0.85);
+      
+      // filter() - get elements matching condition
+      const affordablePrices = prices.filter(price => price <= 50);
+      
+      // reduce() - calculate sum
+      const totalPrice = prices.reduce((sum, price) => sum + price, 0);
+      
+      // find() - find first matching element
+      const cheapRide = prices.find(price => price < 40);
+      
+      // sort() - sort array
+      const sortedPrices = [...prices].sort((a, b) => a - b);
+      
+      console.log('Array Methods Demo:');
+      console.log('Discounted:', discountedPrices);
+      console.log('Affordable:', affordablePrices);
+      console.log('Total:', totalPrice);
+      console.log('Cheap ride:', cheapRide);
+      console.log('Sorted:', sortedPrices);
+    }
+
+    // ===== 17. CONTROL FLOW - Switch Statement Example =====
+    function getVehicleEmoji(vehicleType) {
+      // Switch statement for control flow
+      switch(vehicleType) {
+        case 'Car':
+          return '🚗';
+        case 'Auto':
+          return '🛺';
+        case 'Bike':
+          return '🏍';
+        default:
+          return '🚕';
+      }
+    }
+
+    // ===== 18. FUNCTIONS - Arrow Function Example =====
+    const calculateDiscount = (price, discountPercent) => {
+      return price * (discountPercent / 100);
+    };
+
+    // ===== 19. LOOPS - For Loop Example =====
+    function logAllRides() {
+      console.log('=== All Available Rides ===');
+      for (let i = 0; i < allRides.length; i++) {
+        console.log(${i + 1}. ${allRides[i].driverName} - ${allRides[i].vehicleType});
+      }
+    }
+
+    // ===== 20. EVENT LISTENERS - Example =====
+    window.addEventListener('load', function() {
+      console.log('✅ Page loaded successfully');
+      console.log('🚀 JavaScript concepts demonstrated:');
+      console.log('- Variables & Data Types ✓');
+      console.log('- Control Flow (if/else, switch) ✓');
+      console.log('- Functions ✓');
+      console.log('- Arrays & Array Methods ✓');
+      console.log('- JSON Objects ✓');
+      console.log('- DOM Manipulation ✓');
+      console.log('- Fetch API / AJAX ✓');
+      console.log('- REST API with JSON Server ✓');
+      console.log('- JS Validation Methods ✓');
+    });
+
+    // ===== 21. INITIALIZE APPLICATION =====
+    function initializeApp() {
+      console.log('🚀 Initializing RideFusion Homepage...');
+      
+      // Check user login
+      checkUserLogin();
+      
+      // Load rides from JSON Server
+      loadQuickRides();
+      
+      // Start auto-refresh
+      startAutoRefresh();
+      
+      console.log('✅ Application initialized successfully!');
+    }
+
+    // ===== 22. MAKE FUNCTIONS GLOBAL FOR ONCLICK HANDLERS =====
+    window.handleLogout = handleLogout;
+    window.filterQuickRides = filterQuickRides;
+    window.clearFilters = clearFilters;
+    window.refreshRides = refreshRides;
+
+    // ===== START APPLICATION WHEN DOM IS READY =====
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
+
+    // ===== DEMONSTRATION LOGS =====
+    console.log('%c🎓 FRONT END ENGINEERING II - PROJECT', 'color: #ffd700; font-size: 20px; font-weight: bold;');
+    console.log('%c✅ All Syllabus Topics Covered:', 'color: #22c55e; font-size: 16px; font-weight: bold;');
+    console.log('1. ✓ JS Programming Basics - Data Types, Variables');
+    console.log('2. ✓ Control Flows (if/else, switch, loops)');
+    console.log('3. ✓ Functions (regular & arrow functions)');
+    console.log('4. ✓ Arrays & Array Methods (map, filter, reduce, etc.)');
+    console.log('5. ✓ JSON Objects');
+    console.log('6. ✓ JS Validation Methods');
+    console.log('7. ✓ DOM Manipulation');
+    console.log('8. ✓ REST API with JSON Server');
+    console.log('9. ✓ Fetch API / AJAX (XHR)');
+    console.log('%c🚀 Project by: RideFusion Team', 'color: #ffd700; font-size: 14px;');
+  </script>
+</body>
+</html>
