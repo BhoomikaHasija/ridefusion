@@ -50,7 +50,7 @@
     <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/80"></div>
   </div>
 
-  <!-- Navigation Bar -->
+  <!--- Navigation Bar --->
   <nav class="bg-black/80 backdrop-blur-sm border-b border-yellow-600/30 sticky top-0 z-50 relative">
     <div class="max-w-7xl mx-auto px-6 py-4">
       <div class="flex items-center justify-between">
@@ -79,7 +79,7 @@
   <!-- Main Content -->
   <div class="relative z-10 max-w-6xl mx-auto px-6 py-8">
     
-    <!-- Connection Status -->
+    <!--- Connection Status --->
     <div id="connectionStatus" class="mb-4 p-4 rounded-xl text-center hidden">
       <p class="font-semibold"></p>
     </div>
@@ -92,7 +92,7 @@
       <form id="offerRideForm" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          <!-- Vehicle Type -->
+          <!--- Vehicle Type --->
           <div>
             <label class="block text-yellow-400 mb-2 font-semibold">Vehicle Type *</label>
             <select id="vehicleType" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
@@ -111,7 +111,7 @@
             <span class="error-message" id="phoneError">Phone number is required</span>
           </div>
 
-          <!-- From Location -->
+          <!--- From Location --->
           <div>
             <label class="block text-yellow-400 mb-2 font-semibold">Pickup Location *</label>
             <select id="fromLocation" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
@@ -126,7 +126,7 @@
             <span class="error-message" id="fromError">Please select pickup location</span>
           </div>
 
-          <!-- To Location -->
+          <!--- To Location --->
           <div>
             <label class="block text-yellow-400 mb-2 font-semibold">Drop Location *</label>
             <select id="toLocation" required class="w-full bg-gray-900 border border-yellow-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
